@@ -1,0 +1,54 @@
+<%#
+
+Copyright (C) 2025 The University of Texas MD Anderson Cancer Center
+
+This file is part of xPEDITE.
+
+xPEDITE is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License Version 2 as published by the Free Software Foundation.
+
+xPEDITE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with xPEDITE.
+If not, see <https://www.gnu.org/licenses/>.
+
+%>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF8">
+    <title>Metabolomics Pipeline</title>
+    <!-- These are sourced from local copies rather than CDN for security reasons -->
+    <!-- These are vendor script and css -->
+    <script src="<%= rootPath %>/resources/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="<%= rootPath %>/resources/bootstrap.min.js"></script>
+    <script src="<%= rootPath %>/resources/moment.min.js"></script>
+    <script src="<%= rootPath %>/resources/jquery.dataTables.min.js"></script>
+    <script src="<%= rootPath %>/resources/datetime-moment.js"></script>
+    <script src="<%= rootPath %>/resources/bootstrapValidator.min.js"></script>
+    <link rel="stylesheet" href="<%= rootPath %>/resources/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="<%= rootPath %>/resources/css/bootstrapValidator.min.css" type="text/css" />
+    <link rel="stylesheet" href="<%= rootPath %>/resources/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="<%= rootPath %>/resources/css/jquery.dataTables.min.css" type="text/css" />
+
+    <script type="text/javascript" src="<%= rootPath %>/static/custom.js"></script>
+    <script type="text/javascript" src="<%= rootPath %>/static/Utils.js"></script>
+    <script type="text/javascript" src="<%= rootPath %>/static/IndexPage.js"></script>
+    <script type="text/javascript" src="<%= rootPath %>/static/AdminPage.js"></script>
+    <script type="text/javascript" src="<%= rootPath %>/static/StudyPage.js"></script>
+    <script type="text/javascript" src="<%= rootPath %>/static/GroupModal.js"></script>
+    <script type="text/javascript" src="<%= rootPath %>/static/BatchModal.js"></script>
+
+    <link rel="stylesheet" href="<%= rootPath %>/static/css/custom.css" type="text/css" />
+    <!-- Added as part of frame-busting in older browsers that don't support X-FRAME-OPTIONS header -->
+    <!-- See: http://seclab.stanford.edu/websec/framebusting/framebust.pdf -->
+    <style>
+       body { display: none; } /* display will be set to 'block' in footer.ejs if not in iframe */
+    </style>
+</head>
+
+<body class="mat-app-background">

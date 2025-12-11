@@ -1,0 +1,67 @@
+<!--
+ MIT License
+
+ Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the 'Software'), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+
+### Multi-class Comparison {.tabset .tabset-fade}
+
+ANOVA tests are performed to identify significantly differentially modulated metabolites across different biological groups. FDR-adjusted p-values across all metabolites are calculated and visualized as a dot plot. Metabolites with a p-value less than the displayed cutoff are shown in the dot plot. Complete ANOVA results of all metabolites can be obtained from the Table (Data matrix tab). Both dot plots and data matrix tables are interactive. Column names indicate the compared groups. The color intensity in the dot plot represents the significance based on -log<sub>10</sub>(p-value). There are a variety of buttons on the header bar to manipulate the dot plot view. One can zoom, pan, or choose a specific set of compounds and download the plot.
+
+
+<!-- This is a tab under 'Multi-class Comparison' -->
+#### Graphical represenation
+
+```{r, fig.width=15, fig.height=25, echo=FALSE, message=FALSE, warning=FALSE, dev=c('png','pdf','svg','tiff'), results="asis"}
+pvals <- read.csv(pvalsANOVAFilePath, check.names = FALSE)
+indexOfInteraction <- match("Interaction", colnames(pvals))
+pvals <- pvals[, 1:indexOfInteraction-1]
+generate_anova_multiclass_plot(pvals)
+```
+
+<!-- This is a second tab under 'Multi-class Comparison' -->
+#### Data matrix {.active}
+
+FDR adjusted p-values across all compounds are also added to the table. Column names indicate the compared groups.
+For each comparison five different statics are provided which are described as follow diff indicate difference between two groups. 
+lwr and upr indicates lower and upper confidence interval of difference.
+P.value represents the pvalue for each metabolite while FDR represents the P-value corrected with respect to all compounds.
+
+
+```{r, fig.width=15, fig.height=25, echo=FALSE, message=FALSE, warning=FALSE, dev=c('png','pdf','svg','tiff'), results="asis"}
+pvals_tb_1 <- read.csv(pvalsANOVAFilePath, check.names = FALSE)
+rownames(pvals_tb_1) <- pvals[[1]]
+pvals_tb_1 <- subset(pvals_tb_1, select=-1)
+primaryPathways=c()
+if (all(is.na(pvals_tb_1))) {
+  log_warn("All ANOVA results are NA. Check the input data.")
+  cat("**All ANOVA results are NA. Check the input data.**")
+}
+if ("Primary Pathway" %in% colnames(df)) {
+  for (rowname in rownames(pvals_tb_1)){
+    primaryPathway=df$"Primary Pathway"[rownames(df)==rowname]
+    primaryPathways<-append(primaryPathways,primaryPathway)
+  }
+  pvals_tb_1$"Primary Pathway"<-primaryPathways
+}
+generate_dataTable(pvals_tb_1)
+```
+

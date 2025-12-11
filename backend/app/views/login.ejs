@@ -1,0 +1,51 @@
+<%#
+
+Copyright (C) 2025 The University of Texas MD Anderson Cancer Center
+
+This file is part of xPEDITE.
+
+xPEDITE is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License Version 2 as published by the Free Software Foundation.
+
+xPEDITE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with xPEDITE.
+If not, see <https://www.gnu.org/licenses/>.
+
+%>
+
+<%- include('header'); %>
+
+    <div id="loginContent">
+        <div class="alert alert-info">
+            <h1>xPEDITE Login</h1>
+        </div>
+
+        <div class="col-md-2">
+            <form method="post" id="loginForm" action="<%= rootPath %>/authenticate">
+                <div class="form-group">
+                    <p>
+                        <label for="username">Username:</label>
+                        <input class="form-control" type="text" name="username" id="username" tabindex=1>
+                    </p>
+                    <p>
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" name="password" id="password" tabindex=2>
+                    </p>
+                    <p>
+                        <input class="btn btn-primary" type="button" id="loginSubmit" value="Login" tabindex=3>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+      /* Focus the login button when the password is changed */
+      document.getElementById("password").addEventListener("change", function() {
+        document.getElementById("loginSubmit").focus();
+      })
+    </script>
+
+    <%- include('footer'); %>

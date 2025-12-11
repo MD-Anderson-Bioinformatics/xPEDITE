@@ -1,0 +1,10 @@
+ID,one,two,three,Time
+sample_1,A,AA,AAA,0hours
+sample_2,A,AA,BBB,1hours
+sample_3,A,BB,BBB,1hours
+sample_4,B,BB,BBB,1hours
+sample_5,B,AA,BBB,1hours
+sample_6,B,AA,AAA,1hours
+sample_7,B,AA,AAA,0hours
+sample_8,C,AA,AAA,0hours
+sample_9,D,DD,DDDD,2hours

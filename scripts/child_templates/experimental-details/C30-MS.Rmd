@@ -1,0 +1,29 @@
+<!--
+ MIT License
+
+ Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the 'Software'), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+
+
+## Lipid profiling by C30-MS
+
+To determine the relative abundance of lipids, extracts were prepared and analyzed by C30 chromatography-mass spectrometry (C30-MS). Lipids were extracted using ice-cold 100 µM butylated hydroxytoluene in ethanol containing 2% Avanti SPLASH® LIPIDOMIX® Mass Spec Standard. Extracts were centrifuged at 17,000 g for 5 min at 4°C, and supernatants were evaporated to dryness under nitrogen. Dried extracts were reconstituted in 200 µL ethanol, and 10 µL was injected for analysis. Mobile phase A (MPA; weak) was 0.1% formic acid and 10 mM ammonium formate in acetonitrile:water = 40:60. Mobile phase B (MPB; strong) was 0.1% formic acid and 10 mM ammonium formate in isopropanol:acetonitrile:water = 90:9:1. A Thermo Dionex Vanquish LC system included an Accucore C30 column (2.6 µm, 150 x 2.1 mm) with column compartment set at 40°C. The autosampler tray was chilled to 8°C. The mobile phase flow rate was 200 µL/min, and the gradient elution program was: 0-3 min, 30% MPB; 3-13 min, 30-43% MPB; 13.1-33 min, 50-70% MPB; 33-48 min, 70-99% MPB; 48-55 min, 99% MPB; 55.1-60 min, 30% MPB. The total run time was 60 min. Data were acquired using a Thermo Fisher Scientific Orbitrap Fusion Lumos Tribrid mass spectrometer under ESI positive and negative ionization modes with data dependent acquisition, scan ranges from 150 –1500 m/z, resolution of 240,000 for MS1 acquisition, and spray voltages of 3,600 and -2900 V for positive and negative ionization modes, respectively. Vaporizer and ion transfer tube temperatures were set at 275°C and 300°C, respectively. The sheath, auxiliary and sweep gas pressures were 35, 10, and 0 (arbitrary units), respectively. A hybrid CID/HCD approach was used for MS2 and MS3 fragmentation. Data were analyzed using Thermo Fisher Scientific LipidSearch software and R scripts written in house. The relative abundance (peak area) of each metabolite was normalized by z-score normalization.
+

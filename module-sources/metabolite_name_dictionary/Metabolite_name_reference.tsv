@@ -1,0 +1,396 @@
+Primary Pathway	Compound Discoverer	Trace Finder	Skyline	Refmet Name	Curated Name	Abbreviated Name
+other	-	-	-	-	(3E)-2-oxohex-3-enedioate	2-OH3E
+other	-	-	-	-	(indol-3-yl)acetate	IAA
+other	-	-	-	-	(indol-3-yl)acetyldehyde	IAL
+other	-	-	-	-	(indol-3-yl)ethanol	IET
+glycolysis	-	-	-	-	"1,3-disphosphoglycerate"	"1,3-DPG"
+other	1-Pyrroline-2-carboxylic acid	1-pyrroline-2-carboxylate	1-pyrroline-2-carboxylate	1-Pyrroline-2-carboxylic acid	1-pyrroline-2-carboxylate	1P2C
+other	-	-	-	-	1-pyrroline-5-carboxylate	1P5C
+glycolysis	"2,3-Diphosphoglyceric acid"	"2,3-diphosphoglycerate"	"2,3-diphosphoglycerate"	"2,3-Diphosphoglyceric acid"	"2,3-diphosphoglycerate"	"2,3-DPG"
+fatty acid / lipid	-	-	-	-	2-amino-2-methylpropanoate	2-NH3-Me-prop
+amino acid	-	-	-	-	2-amino-3-carboxymuconate-6-semialdehyde	ACM-SA
+amino acid	-	-	-	-	"2-amino-3-oxohexa-2,4 dienoate"	AOHD
+amino acid	-	-	-	-	2-aminoadipate	2-AA
+amino acid	2-Aminomuconic acid	2-aminomuconate	2-aminomuconate	2-Aminomuconic acid	2-aminomuconate	2-NH3-muc
+amino acid	2-Aminomuconic acid semialdehyde	-	-	-	2-aminomuconate semialdehyde	2-NH3-muc-SA
+nucleotides	-	-	-	-	2'-deoxyadenosine	dA
+nucleotides	dADP	2'-deoxyadenosine 5'-diphosphate	2'-deoxyadenosine 5'-diphosphate	dADP	2'-deoxyadenosine 5'-diphosphate	dADP
+nucleotides	Deoxyadenosine monophosphate	2'-deoxyadenosine 5'-monophosphate	2'-deoxyadenosine 5'-monophosphate	dAMP	2'-deoxyadenosine 5'-monophosphate	dAMP
+nucleotides	Deoxyadenosine triphosphate	2'-deoxyadenosine 5'-triphosphate	2'-deoxyadenosine 5'-triphosphate	dATP	2'-deoxyadenosine 5'-triphosphate	dATP
+nucleotides	-	-	-	-	2'-deoxycytidine	dC
+nucleotides	dCMP	2'-deoxycytidine 5' monophosphate	2'-deoxycytidine 5' monophosphate	dCMP	2'-deoxycytidine 5' monophosphate	dCMP
+nucleotides	dCDP	2'-deoxycytidine 5'-diphosphate	2'-deoxycytidine 5'-diphosphate	dCDP	2'-deoxycytidine 5'-diphosphate	dCDP
+nucleotides	dCTP	2'-deoxycytidine 5'-triphosphate	2'-deoxycytidine 5'-triphosphate	dCTP	2'-deoxycytidine 5'-triphosphate	dCTP
+nucleotides	-	-	-	-	2'-deoxyguanosine	dG
+nucleotides	Deoxyguanosine diphosphate (dGDP)	2'-deoxyguanosine 5'-diphosphate	2'-deoxyguanosine 5'-diphosphate	dGDP	2'-deoxyguanosine 5'-diphosphate	dGDP
+nucleotides	2'-Deoxyguanosine 5'-monophosphate	2'-deoxyguanosine 5'-monophosphate	2'-deoxyguanosine 5'-monophosphate	dGMP	2'-deoxyguanosine 5'-monophosphate	dGMP
+nucleotides	dGTP	2'-deoxyguanosine 5'-triphosphate	2'-deoxyguanosine 5'-triphosphate	dGTP	2'-deoxyguanosine 5'-triphosphate	dGTP
+nucleotides	-	-	-	-	2'-deoxythymidine	dT
+nucleotides	dTDP	2'-deoxythymidine 5'-diphosphate	2'-deoxythymidine 5'-diphosphate	dTDP	2'-deoxythymidine 5'-diphosphate	dTDP
+nucleotides	5-Thymidylic acid	2'-deoxythymidine 5'-monophosphate/5-thymidylate	2'-deoxythymidine 5'-monophosphate/5-thymidylate	dTMP	2'-deoxythymidine 5'-monophosphate / 5-thymidylate	dTMP
+nucleotides	Thymidine 5'-triphosphate (dTTP)	-	-	dTTP	2'-deoxythymidine 5'-triphosphate	dTTP
+nucleotides	-	-	-	-	2'-deoxyuridine	dU
+nucleotides	dUDP	2'-deoxyuridine 5' diphosphate	2'-deoxyuridine 5' diphosphate	dUDP	2'-deoxyuridine 5' diphosphate	dUDP
+nucleotides	dUMP	2'-deoxyuridine 5' monophosphate	2'-deoxyuridine 5' monophosphate	dUMP	2'-deoxyuridine 5' monophosphate	dUMP
+nucleotides	2'-Deoxyuridine-5'-triphosphate (dUTP)	2'-deoxyuridine 5' triphosphate	2'-deoxyuridine 5' triphosphate	dUTP	2'-deoxyuridine 5' triphosphate	dUTP
+amino acid	-	-	-	-	2-ethylglutarate	2-EtG
+fatty acid / lipid	(2R)-2-Hydroxy-3-(phosphonatooxy)propanoate	-	-	-	2-hydroxy-3-(phosphonatooxy)propanoate	2-OH-3-PO-prop
+other	2-Hydroxyadipic acid	2-hydroxyadipate	2-hydroxyadipate	2-Hydroxyadipic acid	2-hydroxyadipate	2-HA
+fatty acid / lipid	2-Hydroxybutyric acid	2-hydroxybutyrate	2-hydroxybutyrate	2-Hydroxybutyric acid	2-hydroxybutyrate	2-HB
+TCA cycle	2-Hydroxyglutarate	2-hydroxyglutarate	2-hydroxyglutarate	2-Hydroxyglutaric acid	2-hydroxyglutarate	2-HG
+amino acid	-	-	-	-	2-hydroxymethylglutarate	2-HMeG
+TCA cycle	-	-	-	-	2-methylcitrate	2-Me-citrate
+amino acid	2-Methylglutaric acid	2-methylglutarate	2-methylglutarate	2-Methylglutaric acid	2-methylglutarate	2-MeG
+fatty acid / lipid	-	-	-	-	2-oxoadipate	2-OA
+fatty acid / lipid	2-Ketobutyric acid	-	-	-	2-oxobutyrate / alpha-ketobutyrate	a-KB
+amino acid	-	-	-	-	2-oxoglutaramate / alpha-ketoglutaramate	a-KGM
+TCA cycle	Oxoglutaric acid	2-oxoglutarate/alpha-ketoglutarate	2-oxoglutarate/alpha-ketoglutarate	Oxoglutaric acid	2-oxoglutarate / alpha-ketoglutarate	a-KG
+glycolysis	2-Phospho-D-glyceric acid	2-phosphoglycerate	2-phosphoglycerate	2-Phosphoglyceric acid	2-phosphoglycerate	2-PG
+amino acid	2-Propylglutaric acid	2-propylglutarate	2-propylglutarate	2-Propylglutaric acid	2-propylglutarate	2-PrG
+amino acid	-	-	-	-	2-pyrrolidone	2-PYR
+TCA cycle	-	-	-	-	2-sulfosuccinate	2-sulfo-succinate
+fatty acid / lipid	-	-	-	-	3-amino-2-methylpropanoate	3-NH3-2-Me-prop
+other	3-Dehydro-L-gulonate	-	-	3-Dehydro-L-gulonate	3-dehydrogulonate	3-DHG
+fatty acid / lipid	-	-	-	-	3-hydroxy-3-methylglutaryl-CoA	HMG-CoA
+nucleotides	-	-	-	-	3-hydroxyanthranilate	3-HAA
+fatty acid / lipid	-	-	-	-	3-hydroxybutanoyl-CoA	BHB-CoA
+fatty acid / lipid	3-Hydroxybutyric acid	3-hydroxybutyrate	3-hydroxybutyrate	3-Hydroxybutyric acid	3-hydroxybutyrate / beta-hydroxybutyrate	BHB
+fatty acid / lipid	-	-	-	-	3-hydroxyisobutanoate / beta-hydroxyisobutyrate	BHIB
+fatty acid / lipid	-	-	-	-	3-hydroxyisobutanoate-CoA / beta-hydroxyisobutyrate-CoA	BHIB-CoA
+nucleotides	-	-	-	-	3-hydroxykynurenine	3-OH-Kyn
+amino acid	3-Hydroxymethylglutaric acid	3-hydroxymethylglutarate	3-hydroxymethylglutarate	3-Hydroxymethylglutaric acid	3-hydroxymethylglutarate	3-HMeG
+fatty acid / lipid	-	-	-	-	3-methyl-2-oxobutyrate / alpha-ketoisovalerate	a-KIV
+amino acid	-	-	-	-	3-methylbutanoyl-CoA	3-MB-CoA
+amino acid	-	-	-	-	3-methylcrotonyl-CoA	3-MC-CoA
+amino acid	-	-	-	-	3-methylglutaconoyl-CoA	3-MGC-CoA
+fatty acid / lipid	-	-	-	3-Methyl pyruvic acid	3-methylpyruvate / alpha-ketoisobutyrate	a-KIB
+glycolysis	3-Phospho-D-glyceric acid	-	-	3-Phosphoglyceric acid	3-phosphoglycerate	3-PG
+amino acid	3-Sulfinoalanine	-	-	3-Sulfino-alanine	3-sulfinoalanine	3-sulfino-Ala
+amino acid	-	-	-	-	4-aminobenzoate	4-NH3-benzoate
+amino acid	L-4-Hydroxyglutamate semialdehyde	4-hydroxyglutamate semialdehyde	4-hydroxyglutamate semialdehyde	L-4-Hydroxyglutamate semialdehyde	4-hydroxyglutamate semialdehyde	4-OH-Glu-SA
+amino acid	-	-	-	-	4-methyl-2-oxopentanoate / alpha-ketoisocaproate	a-KIC
+other	-	-	-	-	4-methylbenzoate	4-Me-benzoate
+amino acid	-	-	-	-	4-oxoproline	4-oxo-Pro
+vitamin	-	-	-	-	4-pyridoxate	4-pyridoxate
+other	-	-	-	-	4-pyridoxolactone	4-PL
+other	-	-	-	-	4-toluate	4-toluate
+nucleotides	AICAR	-	-	AICA ribonucleotide	5-aminoimidazole-4-carboxamide ribotide	AICAR
+fatty acid / lipid	-	-	-	-	5-dehydro-4-deoxyglucarate	5-DDG
+amino acid	-	-	-	-	5-hydroxyindole thiazolidine carboxylate	5-HITCA
+amino acid	-	-	-	-	5-hydroxyindoleacetaldehyde	5-HIAL
+amino acid	-	-	-	-	5-hydroxyindoleacetate	5-HIAA
+amino acid	5-Hydroxy-L-tryptophan	-	-	5-Hydroxy-L-tryptophan	5-hydroxytryptophan	5-OH-Trp
+amino acid	-	-	-	-	5-hydroxytryptophol	5-HTOL
+amino acid	-	-	-	-	5-hydroxytryptophol glucuronide	5-HTOL-gluc
+amino acid	-	-	-	-	5-hydroxytryptophol sulfate	5-HTOL-sulfate
+amino acid	-	-	-	-	5-methylcytosine	5-Me-C
+nucleotides	5'-Phosphoribosyl-N-formylglycinamide	5'-phosphoribosyl-N-formylglycinamide	5'-phosphoribosyl-N-formylglycinamide	N(2)-Formyl-N(1)-(5-phospho-D-ribosyl)glycinamide	5'-phosphoribosyl-N-formylglycinamide	FGAR
+amino acid	-	-	-	-	6-hydroxymelatonin	6-OHM
+amino acid	-	-	-	-	6-sulfatoxymelatonin	aMT6s
+fatty acid / lipid	-	-	-	-	acetaldehyde	AcH
+fatty acid / lipid	Acetate ion	-	-	-	acetate	Ac
+fatty acid / lipid	-	-	-	-	acetoacetate	AcAc
+fatty acid / lipid	-	-	-	-	acetoacetyl-CoA	AcAc-CoA
+	-	-	-	-	acetylcarnitine	Ac-Car
+amino acid	-	-	-	-	acetylcholine	Ac-Cho
+CoA	Acetyl-CoA	-	-	Acetyl-CoA	acetyl-CoA	Ac-CoA
+nucleotides	-	-	-	-	adenine	adenine
+nucleotides	-	-	-	-	adenosine	A
+nucleotides	3'-phospho-5'-adenylyl sulfate	adenosine 3'-phosphate 5'-phosphosulfate	adenosine 3'-phosphate 5'-phosphosulfate	-	adenosine 3'-phosphate 5'-phosphosulfate/3'-phosphoadenosine 5'-phosphosulfate	PAPS
+nucleotides	ADP	adenosine 5'-diphosphate	adenosine 5'-diphosphate	ADP	adenosine 5'-diphosphate	ADP
+nucleotides	Adenosine monophosphate	adenosine 5'-monophosphate	adenosine 5'-monophosphate	AMP	adenosine 5'-monophosphate	AMP
+nucleotides	Adenosine triphosphate	adenosine 5'-triphosphate	adenosine 5'-triphosphate	ATP	adenosine 5'-triphosphate	ATP
+nucleotides	Adenylsuccinic acid	adenylsuccinate	adenylsuccinate	Adenylsuccinic acid	adenylosuccinate / succinyl-adenosine monophosphate	S-AMP
+amino & nucleotide sugar	ADP-glucose	ADP-glucose	ADP-glucose	ADP-glucose	ADP-glucose	ADP-glucose
+amino & nucleotide sugar	Adenosine diphosphate ribose	ADP-ribose	ADP-ribose	ADP-ribose	ADP-ribose	ADP-ribose
+amino & nucleotide sugar	ADP-ribose 2'-phosphate	ADP-ribose 2'-phosphate	ADP-ribose 2'-phosphate	ADP-ribose 2'-phosphate	ADP-ribose 2'-phosphate	ADP-ribose-2P
+amino acid	-	-	-	-	alanine	Ala
+nucleotides	-	-	-	-	allantoin	allantoin
+other	-	-	-	-	ammonium	NH4+
+amino acid	-	-	-	-	anthranilate	anthranilate
+other	Arabinonic acid	arabinonate	arabinonate	Arabinonic acid	arabinonate	arabinonate
+amino acid	-	-	-	-	arginine	Arg
+amino acid	-	-	-	-	arginosuccinate	Arg-succinate
+vitamin	-	-	-	-	ascorbate / vitamin C	vitC
+amino acid	-	-	-	-	asparagine	Asn
+TCA cycle	L-Aspartic acid	aspartate	aspartate	Aspartic acid	aspartate	Asp
+amino acid	L-beta-aspartyl-L-glutamic acid	aspartylglutamate	aspartylglutamate	L-beta-aspartyl-L-glutamic acid	aspartylglutamate	Asp-Glu
+amino acid	-	-	-	-	beta-alanine	b-Ala
+amino acid	-	-	-	-	beta-aspartylglutamate	b-Asp-Glu
+fatty acid / lipid	Butyric acid	butyrate/butanoate	butyrate/butanoate	Butyric acid	butyrate/butanoate	butyrate
+amino acid	-	-	-	-	carbamoyl phosphate	CP
+amino acid	-	-	-	-	carnosine	carnosine
+nucleotides	-	-	-	-	CDP-choline	CDP-choline
+nucleotides	CDP-Ethanolamine	CDP-ethanolamine	CDP-ethanolamine	CDP-Ethanolamine	CDP-ethanolamine	CDP-ethanolamine
+amino acid	-	-	-	-	choline	choline
+other	-	-	-	-	chorismate	chorismate
+TCA cycle	cis-Aconitic acid	cis-aconitate	cis-aconitate	cis-Aconitic acid	cis-aconitate	aconitate
+CoA	-	-	-	-	citramalyl-CoA	citramalyl-CoA
+TCA cycle	Citric acid	citrate	citrate	Citric acid	citrate	citrate
+amino acid	-	-	-	-	citrulline	citrulline
+amino acid	Beta-Citryl-L-glutamic acid	citryl-glutamate	citryl-glutamate	Beta-Citryl-glutamic acid	citryl-glutamate	citryl-glutamate
+amino & nucleotide sugar	Cytidine monophosphate N-acetylneuraminic acid	CMP-N-acetylneuraminate	CMP-N-acetylneuraminate	Cytidine monophosphate N-acetylneuraminic acid	CMP-N-acetylneuraminate	CMP-NeuNAc
+CoA	-	-	-	-	coenzyme A	CoA
+other	-	-	-	-	coumarate	coumarate
+amino acid	-	-	-	-	creatine	creatine
+amino acid	-	-	-	-	creatinine	creatinine
+CoA	-	-	-	-	crotonyl-CoA	crotonyl-CoA
+nucleotides	Cyclic AMP	cyclic AMP	cyclic AMP	"3',5' cyclic AMP"	cyclic AMP	cAMP
+amino acid	-	-	-	-	cystathionine	cystathionine
+amino acid	Cysteic acid	cysteate	cysteate	Cysteic acid	cysteate	cysteate
+nucleotides	-	-	-	-	cysteine	Cys
+nucleotides	-	-	-	-	cytidine	cytidine
+nucleotides	-	-	-	-	cytosine	C
+nucleotides	Cytidine monophosphate	cytidine 5' monophosphate	cytidine 5' monophosphate	CMP	cytidine 5' monophosphate	CMP
+nucleotides	CDP	cytidine 5'-diphosphate	cytidine 5'-diphosphate	CDP	cytidine 5'-diphosphate	CDP
+nucleotides	Cytidine triphosphate	cytidine 5'-triphosphate	cytidine 5'-triphosphate	CTP	cytidine 5'-triphosphate	CTP
+PPP	Deoxyribose 5-phosphate	deoxyribose 5'-phosphate	deoxyribose 5'-phosphate	Deoxyribose 5-phosphate	deoxyribose 5'-phosphate	deoxyribose 5-phosphate
+nucleotides	Diadenosine triphosphate	diadenosine triphosphate	diadenosine triphosphate	Diadenosine triphosphate	diadenosine triphosphate	ATP-ATP
+fatty acid / lipid	-	-	-	-	diethanolamine	DEA
+nucleotides	-	-	-	-	dihydrouracil	dihydrouracil
+glycolysis	-	-	-	-	dihydroxyacetone phosphate	DHAP
+amino acid	-	-	-	-	dimethylglycine	DM-Gly
+other	-	-	-	-	diphosphate	P-P
+PPP	D-Erythrose 4-phosphate	erythrose 4-phosphate	erythrose 4-phosphate	Erythrose 4-phosphate	erythrose 4-phosphate	E4P
+fatty acid / lipid	-	-	-	-	ethanolamine	EA
+nucleotides	-	-	-	-	formylglycinamidine ribonucleotide	FGAM
+nucleotides	FAD	flavin adenine dinucleotide	flavin adenine dinucleotide	FAD	flavin adenine dinucleotide	FAD
+nucleotides	FADH2	-	-	FADH2	"flavin adenine dinucleotide, reduced"	FADH2
+nucleotides	Flavin Mononucleotide	flavin mononucleotide	flavin mononucleotide	FMN	flavin mononucleotide	FMN
+other	-	-	-	-	formate	formate
+glycolysis	"Fructose 1,6-bisphosphate"	"fructose 1,6-bisphosphate"	"fructose 1,6-bisphosphate"	"Fructose 1,6-bisphosphate"	"fructose 1,6-bisphosphate"	"F-1,6-BP"
+glycolysis	Fructose 1-phosphate	fructose 1-phosphate	fructose 1-phosphate	Fructose 1-phosphate	fructose 1-phosphate	F1P
+glycolysis	Fructose 6-phosphate	fructose 6-phosphate	fructose 6-phosphate	Fructose 6-phosphate	fructose 6-phosphate	F6P
+glycolysis	"Fructose-2,6-bisphosphate"	"fructose-2,6-bisphosphate"	"fructose-2,6-bisphosphate"	"Fructose-2,6-bisphosphate"	"fructose-2,6-bisphosphate"	"F-2,6-BP"
+carbohydrate	-	-	-	-	fucose	fucose
+carbohydrate	-	-	-	-	fucose-1-phosphate	fucose-1P
+TCA cycle	Fumaric acid	fumarate	fumarate	Fumaric acid	fumarate	fumarate
+other	Galactaric acid	galactarate	galactarate	Galactaric acid	galactarate	galactarate
+other	Galactose 1-phosphate	galactose 1-phosphate	galactose 1-phosphate	Galactose 1-phosphate	galactose 1-phosphate	Gal-1P
+amino & nucleotide sugar	Galacturonic acid	galacturonate	galacturonate	Galacturonic acid	galacturonate	galacturonate
+amino acid	-	-	-	-	gamma-aminobutyrate	GABA
+amino acid	5-L-Glutamyl-L-alanine	gamma-glutamylalanine	gamma-glutamylalanine	5-L-Glutamyl-L-alanine	gamma-glutamylalanine	g-Glu-Ala
+amino acid	-	-	-	-	gamma-glutamylglutamate	g-Glu-Glu
+amino acid	5-L-Glutamyl-taurine	gamma-glutamyltaurine	gamma-glutamyltaurine	5-L-Glutamyl-taurine	gamma-glutamyltaurine	g-Glu-taurine
+amino & nucleotide sugar	-	-	-	-	GDP-fucose	GDP-fucose
+amino & nucleotide sugar	Guanosine diphosphate mannose	GDP-mannose	GDP-mannose	GDP-mannose	GDP-mannose	GDP-mannose
+other	Glucaric acid	glucarate	glucarate	Glucaric acid	glucarate	glucarate
+PPP	Gluconic acid	gluconate	gluconate	Gluconic acid	gluconate	gluconate
+PPP	6-Phosphogluconic acid	gluconate 6-phosphate	gluconate 6-phosphate	6-Phosphogluconic acid	gluconate 6-phosphate	gluconate-6P
+amino & nucleotide sugar	-	"glucono-1,5-lactone"	"glucono-1,5-lactone"	-	"glucono-1,5-lactone"	G15L
+amino & nucleotide sugar	-	"glucono-1,5-lactone-6-phosphate"	"glucono-1,5-lactone-6-phosphate"	-	"glucono-1,5-lactone-6-phosphate"	G15L-6P
+glycolysis	D-Glucose	glucose	glucose	Glucose	glucose	glucose
+glycolysis	"Alpha-D-Glucose 1,6-bisphosphate"	"glucose 1,6-bisphosphate"	"glucose 1,6-bisphosphate"	"Glucose 1,6-bisphosphate"	"glucose 1,6-bisphosphate"	"G-1,6-BP"
+glycolysis	Glucose 1-phosphate	glucose 1-phosphate	glucose 1-phosphate	Glucose 1-phosphate	glucose 1-phosphate	G1P
+glycolysis	Beta-D-Glucose 6-phosphate	glucose 6-phosphate	glucose 6-phosphate	Beta-D-Glucose 6-phosphate	glucose 6-phosphate	G6P
+other	D-Glucuronic acid	glucuronate	glucuronate	Glucuronic acid	glucuronate	GlcA
+other	D-Glucuronic acid 1-phosphate	glucuronate 1-phosphate	glucuronate 1-phosphate	D-Glucuronic acid 1-phosphate	glucuronate 1-phosphate	GlcA-1P
+other	-	-	-	-	glucuronolactone	GL
+CoA	-	-	-	-	glutaconyl-CoA	glutaconyl-CoA
+TCA cycle	L-Glutamic acid	glutamate	glutamate	Glutamic acid	glutamate	Glu
+amino acid	-	-	-	-	glutamate-5-semialdehyde	Glu-5-SA
+amino acid	-	-	-	-	glutamine	Gln
+amino acid	-	-	-	-	glutamyl 5-phosphate	Glu-5P
+amino acid	-	-	-	-	glutamylcysteine	Glu-Cys
+amino acid	Gamma Glutamylglutamic acid	glutamylglutamate	glutamylglutamate	gamma-Glutamylglutamic acid	glutamylglutamate	Glu-Glu
+other	Glutaric acid	glutarate	glutarate	Glutaric acid	glutarate	glutarate
+CoA	-	-	-	-	glutaryl-CoA	glutaryl-CoA
+amino acid	"glutathione, oxidized"	-	-	glutathione	"glutathione, oxidized"	GSSG
+amino acid	"Glutathione, reduced"	"glutathione, reduced"	"glutathione, reduced"	Glutathione	"glutathione, reduced"	GSH
+glycolysis	Glyceraldehyde 3-phosphate	glyceraldehyde 3-phosphate	glyceraldehyde 3-phosphate	-	glyceraldehyde 3-phosphate	glyceraldehyde-3P
+other	Glyceric acid	glycerate	glycerate	Glyceric acid	glycerate	glycerate
+glycolysis	-	-	-	-	glycerol	glycerol
+glycolysis	Glycerol 3-phosphate	glycerol 3-phosphate	glycerol 3-phosphate	sn-Glycero-3-phosphate	glycerol 3-phosphate	glycerol-3P
+fatty acid / lipid	Glycerophosphocholine	glycerophosphocholine	glycerophosphocholine	sn-Glycero-3-phosphocholine	glycerophosphocholine	glycerophosphocholine
+fatty acid / lipid	Glycerylphosphorylethanolamine	glycerylphosphorylethanolamine	glycerylphosphorylethanolamine	sn-Glycero-3-phosphoethanolamine	glycerylphosphorylethanolamine	glycerylphosphorylethanolamine
+nucleotides	-	-	-	-	glycinamide ribonucleotide	GAR
+amino acid	-	-	-	-	glycine	Gly
+other	-	glyoxylate	glyoxylate	-	glyoxylate	glyoxylate
+nucleotides	Guanine	-	-	Guanine	guanine	guanine
+nucleotides	Guanosine	-	-	Guanosine	guanosine	G
+nucleotides	Guanosine diphosphate	guanosine 5'-diphosphate	guanosine 5'-diphosphate	GDP	guanosine 5'-diphosphate	GDP
+nucleotides	Guanosine monophosphate	guanosine 5'-monophosphate	guanosine 5'-monophosphate	GMP	guanosine 5'-monophosphate	GMP
+nucleotides	Guanosine triphosphate	guanosine 5'-triphosphate	guanosine 5'-triphosphate	GTP	guanosine 5'-triphosphate	GTP
+other	-	-	-	-	gulonate	gulonate
+amino acid	-	-	-	-	histidine	His
+TCA cycle	-	-	-	-	homocitrate	homocitrate
+amino acid	-	-	-	-	homocysteine	Hcy
+amino acid	Homocysteinesulfinic acid	homocysteinesulfinate	homocysteinesulfinate	Homocysteinesulfinic acid	homocysteinesulfinate	homocysteinesulfinate
+amino acid	-	-	-	-	homoserine	Hse
+other	-	-	-	-	hydrogencarbonate	bicarbonate
+amino acid	-	-	-	-	hydroxyproline	OH-Pro
+other	Hydroxypropanedioic acid	hydroxypropanedioate	hydroxypropanedioate	Hydroxypropanedioic acid	hydroxypropanedioate	hydroxypropanedioate
+amino acid	-	-	-	-	hypotaurine	hypotaurine
+nucleotides	Hypoxanthine	-	-	Hypoxanthine	hypoxanthine	hypoxanthine
+nucleotides	-	-	-	-	hypoxanthosine	Hx
+other	-	-	-	-	imidazolone	imidazolone
+amino acid	-	-	-	-	indole	indole
+nucleotides	Inosine	-	-	Inosine	inosine	inosine
+nucleotides	IDP	-	-	-	inosine 5'-diphosphate	IDP
+nucleotides	Inosinic acid	inosine 5'-monophosphate/inosinate	inosine 5'-monophosphate/inosinate	IMP	inosine 5'-monophosphate/inosinate	IMP
+nucleotides	Inosine triphosphate (ITP)	-	-	-	inosine 5'-triphosphate	ITP
+CoA	-	-	-	-	isobutanoyl-CoA	isobutanoyl-CoA
+TCA cycle	Isocitric acid	isocitrate	isocitrate	Isocitric acid	isocitrate	isocitrate
+amino acid	-	-	-	-	isoleucine	Ile
+fatty acid / lipid	-	-	-	-	isovalerate	IVA
+TCA cycle	Itaconic acid	itaconate	itaconate	Itaconic acid	itaconate	itaconate
+CoA	-	-	-	-	itaconyl-CoA	itaconyl-CoA
+amino acid	Ketoleucine	ketoleucine	ketoleucine	Ketoleucine	ketoleucine	ketoleucine
+amino acid	-	-	-	-	kynurenate	kynurenate
+amino acid	-	-	-	-	kynurenine	Kyn
+glycolysis	L-Lactic acid	lactate	lactate	Lactic acid	lactate	lactate
+amino acid	-	-	-	-	lactoylglutathione	lactoyl-GSH
+amino acid	-	-	-	-	leucine	Leu
+other	-	-	-	-	lipopolysaccharide	LPS
+amino acid	-	-	-	-	lysine	Lys
+TCA cycle	L-Malic acid	malate	malate	D-Malic acid	malate	malate
+other	-	-	-	-	maleamate	maleamate
+other	Maleic acid	maleate	maleate	Maleic acid	maleate	maleate
+other	Malonic acid	malonate	malonate	Malonic acid	malonate	malonate
+glycolysis	D-Mannose 1-phosphate	mannose 1-phosphate	mannose 1-phosphate	D-Mannose 1-phosphate	mannose 1-phosphate	M1P
+glycolysis	Mannose 6-phosphate	mannose 6-phosphate	mannose 6-phosphate	Mannose 6-phosphate	mannose 6-phosphate	M6P
+amino acid	-	-	-	-	melatonin	melatonin
+other	Mesaconic acid	mesaconate	mesaconate	Mesaconic acid	mesaconate	mesaconate
+CoA	-	-	-	-	mesaconyl-CoA	mesaconyl-CoA
+amino acid	-	-	-	-	methionine	Met
+CoA	-	-	-	-	methylacrylyl CoA	MA-CoA
+other	-	-	-	-	methylglyoxal	methylglyoxal
+other	-	-	-	-	methylmalonate semialdehyde	MMSA
+other	-	-	-	-	methylmalonic acid	MMA
+other	Methylmalonic acid	-	-	Methylmalonic acid	methylmalonate	methylmalonate
+amino acid	-	-	-	-	N-acetylasparagine	AsnNAc
+amino acid	N-Acetyl-L-aspartic acid	N-acetylaspartate	N-acetylaspartate	N-Acetylaspartic acid	N-acetylaspartate	AspNAc
+amino acid	L-Acetylcarnitine	acetylcarnitine	acetylcarnitine	CAR 2:0	N-acetylcarnitine	CAR-NAc
+amino acid	-	-	-	-	N-acetylcitrulline	citrulline-NAc
+amino acid	Acetylcysteine	-	-	N-Acetylcysteine	N-acetylcysteine	CysNAc
+amino & nucleotide sugar	N-acetyl-alpha-D-galactosamine 1-phosphate	-	-	N-acetyl-alpha-D-galactosamine 1-phosphate	N-acetylgalactosamine 1-phosphate	GalNAc-1P
+amino & nucleotide sugar	N-Acetyl-glucosamine 1-phosphate	-	-	N-Acetyl-D-glucosamine 1-phosphate	N-acetylglucosamine 1-phosphate	GlcNAc-1P
+amino & nucleotide sugar	N-Acetyl-D-Glucosamine 6-Phosphate	-	-	N-Acetyl-glucosamine 6-phosphate	N-acetylglucosamine 6-phosphate	GlcNAc-6P
+amino acid	N-Acetylglutamic acid	N-acetylglutamate	N-acetylglutamate	N-Acetylglutamic acid	N-acetylglutamate	GluNAc
+amino acid	N-Acetylleucine	N-acetylleucine	N-acetylleucine	N-Acetylleucine	N-acetylleucine	LeuNAc
+amino acid	N-Acetyl-L-methionine	N-acetylmethionine	N-acetylmethionine	N-Acetylmethionine	N-acetylmethionine	MetNAc
+amino acid	N-Acetylneuraminic acid	N-acetylneuraminate	N-acetylneuraminate	N-Acetylneuraminic acid	N-acetylneuraminate	N-acetylneuraminate
+amino acid	-	-	-	-	N-acetylornithine	Orn-NAc
+amino acid	-	-	-	-	N-acetylproline	ProNAc
+amino acid	N-Acetylserine	-	-	N-Acetylserine	N-acetylserine	SerNAc
+amino acid	-	-	-	-	N-acetylserotonin	serotonin-NAc
+amino acid	-	-	-	-	N-acetylserotonin glucuronide	serotonin-NAc-G
+amino acid	-	-	-	-	N-acetylserotonin sulfate	serotonin-NAc-S
+amino acid	-	-	-	-	N-acetylspermidine	SpdNAc
+amino acid	-	-	-	-	N-acetylspermine	SpmNAc
+amino acid	-	-	-	-	N-acetyltaurine	taurine-NAc
+TCA cycle	Ureidosuccinic acid	-	-	N-Carbamoylaspartic acid	N-carbamoylaspartate	N-carbamoylaspartate
+amino acid	-	-	-	-	N-formyl-4-amino-5-aminomethyl-2-methylpyrimidine	FAMP
+amino acid	-	-	-	-	N-formylkynurenine	N-formyl-Kyn
+amino acid	N-Formyl-L-methionine	N-formylmethionine	N-formylmethionine	N-Formylmethionine	N-formylmethionine	N-formyl-Met
+nucleotides	-	-	-	-	nicotinamide	NAM
+nucleotides	NADPH	"nicotinamide adenine dinucleotide 3'-phosphate, reduced"	"nicotinamide adenine dinucleotide 3'-phosphate, reduced"	NADPH	"nicotinamide adenine dinucleotide 3'-phosphate, reduced"	NADPH
+nucleotides	-	-	-	-	"nicotinamide adenine dinucleotide 3'-phosphate, oxidized"	NADP+
+nucleotides	NADH	"nicotinamide adenine dinucleotide, reduced"	"nicotinamide adenine dinucleotide, reduced"	NADH	"nicotinamide adenine dinucleotide, reduced"	NADH
+nucleotides	-	-	-	-	"nicotinamide adenine dinucleotide, oxidized"	NAD+
+nucleotides	-	-	-	-	nicotinamide mononucleotide / nicotinamide ribonucleotide	NMN
+nucleotides	-	-	-	-	nicotinamide riboside	NR
+nucleotides	-	-	-	-	nicotinate / niacin	niacin
+nucleotides	-	-	-	-	nicotinate adenine dinucleotide	NAAD
+nucleotides	-	-	-	-	nicotinate mononucleotide	NaMN
+nucleotides	-	-	-	-	nicotinate ribonucleoside	NaR
+nucleotides	-	-	-	-	nicotinate ribonucleotide	NaMN
+nucleotides	-	-	-	-	nicotine	nicotine
+nucleotides	-	-	-	-	nicotinurate	nicotinurate
+amino acid	-	-	-	-	N-methylserotonin	serotonin-NMe
+fatty acid / lipid	-	O-phosphoethanolamine	O-phosphoethanolamine	-	O-phosphoethanolamine	O-phosphoethanolamine
+amino acid	-	-	-	-	ornithine	Orn
+amino acid	Orotic acid	orotate	orotate	Orotic acid	orotate	orotate
+amino acid	Orotidine	orotidine	orotidine	Orotidine	orotidine	orotidine
+other	Oxalic acid	oxalate	oxalate	Oxalic acid	oxalate	oxalate
+TCA cycle	Oxalacetic acid	oxaloacetate	oxaloacetate	Oxaloacetic acid	oxaloacetate	OAA
+vitamin	Pantothenic acid	pantothenate	pantothenate	Pantothenic acid	pantothenate	pantothenate
+amino acid	-	-	-	-	phenylalanine	Phe
+glycolysis	Phenylpyruvic acid	phenylpyruvate	phenylpyruvate	Phenylpyruvic acid	phenylpyruvate	phenylpyruvate
+other	-	-	-	-	phosphate	P
+fatty acid / lipid	-	-	-	-	phosphatidylcholine	PC
+fatty acid / lipid	-	-	-	-	phosphatidylethanolamine	PE
+nucleotides	Phosphoadenosine phosphosulfate	-	-	Phosphoadenosine phosphosulfate	phosphoadenosine phosphosulfate	PAPS
+fatty acid / lipid	-	-	-	-	phosphocholine	P-choline
+amino acid	Phosphocreatine	phosphocreatine	phosphocreatine	Phosphocreatine	phosphocreatine	P-creatine
+glycolysis	Phosphoenolpyruvic acid	phosphoenolpyruvate	phosphoenolpyruvate	Phosphoenolpyruvic acid	phosphoenolpyruvate	PEP
+fatty acid / lipid	O-Phosphoethanolamine	-	-	Phosphoethanolamine	phosphoethanolamine	P-ethanolamine
+other	Phosphoric acid	phosphorate	phosphorate	Phosphoric acid	phosphorate	H3PO4
+PPP	Phosphoribosyl pyrophosphate	phosphoribosyl pyrophosphate	phosphoribosyl pyrophosphate	Phosphoribosyl pyrophosphate	phosphoribosyl pyrophosphate	PRPP
+amino acid	Phosphoserine	phosphoserine	phosphoserine	Phosphoserine	phosphoserine	p-Ser
+other	-	-	-	-	picolinate	picolinate
+other	-	-	-	-	pipecolate	pipecolate
+amino acid	-	-	-	-	proline	Pro
+fatty acid / lipid	propanoate	-	-	-	propionate/propanoate	propionate
+amino acid	-	-	-	-	putrescine	Put
+vitamin	-	-	-	-	pyridoxal	pyridoxal
+vitamin	Pyridoxal 5'-phosphate	pyridoxal 5'-phosphate	pyridoxal 5'-phosphate	Pyridoxal 5'-phosphate	pyridoxal 5'-phosphate	P5P
+vitamin	-	-	-	-	pyridoxamine	pyridoxamine
+vitamin	-	-	-	-	pyridoxine	pyridoxine
+vitamin	-	-	-	-	pyridoxine 5-phosphate	PNP
+other	-	-	-	-	pyrroline 5-carboxylate	P5C
+amino acid	Pyroglutamic acid	pyroglutamate	pyroglutamate	Pyroglutamic acid	pyroglutamate	pGlu
+glycolysis	Pyruvic acid	pyruvate	pyruvate	Pyruvic acid	pyruvate	pyruvate
+other	-	-	-	-	quinolinate	quinolinate
+vitamin	-	-	-	-	riboflavin / vitamin B2	vitB2
+vitamin	"Riboflavin cyclic-4',5'-phosphate"	"riboflavin cyclic-4',5'-phosphate"	"riboflavin cyclic-4',5'-phosphate"	"Riboflavin cyclic-4',5'-phosphate"	"riboflavin cyclic-4',5'-phosphate"	cFMN
+other	Ribonic acid	ribonate	ribonate	Ribonic acid	ribonate	ribonate
+PPP	"Ribose 1,5-bisphosphate"	"ribose 1,5-bisphosphate"	"ribose 1,5-bisphosphate"	"Ribose 1,5-bisphosphate"	"ribose 1,5-bisphosphate"	"ribose 1,5-bisphosphate"
+PPP	Ribose 1-phosphate	ribose 1-phosphate	ribose 1-phosphate	Ribose 1-phosphate	ribose 1-phosphate	ribose 1-phosphate
+PPP	D-Ribose 5-phosphate	-	-	Ribose	ribose 5-phosphate	ribose 5-phosphate
+PPP	D-Ribulose 5-phosphate	-	-	D-Ribulose 5-phosphate	ribulose 5-phosphate	ribulose 5-phosphate
+amino acid	-	-	-	-	sarcosine / N-methylglycine	Sar
+PPP	"Sedoheptulose 1,7-bisphosphate"	"sedoheptulose 1,7-bisphosphate"	"sedoheptulose 1,7-bisphosphate"	"Sedoheptulose 1,7-bisphosphate"	"sedoheptulose 1,7-bisphosphate"	"sedoheptulose 1,7-bisphosphate"
+PPP	D-Sedoheptulose 7-phosphate	sedoheptulose 7-phosphate	sedoheptulose 7-phosphate	D-Sedoheptulose 7-phosphate	sedoheptulose 7-phosphate	sedoheptulose 7-phosphate
+amino acid	-	-	-	-	serine	Ser
+amino acid	-	-	-	-	serotonin / 5-hydroxytryptamine (5-HT)	serotonin
+amino acid	-	-	-	-	serotonin o-sulfate	serotonin-o-S
+other	-	-	-	-	shikimate	shikimate
+amino acid	-	-	-	-	spermidine	Spd
+amino acid	-	-	-	-	spermine	Spm
+TCA cycle	Succinic acid	succinate	succinate	Succinic acid	succinate	succinate
+TCA cycle	Succinic acid semialdehyde	succinate semialdehyde	succinate semialdehyde	Succinic acid semialdehyde	succinate semialdehyde	succinate semialdehyde
+CoA	-	-	-	-	succinyl-CoA	succinyl-CoA
+other	-	-	-	-	sucrose	sucrose
+other	Sulfate	sulfate	sulfate	Sulfate	sulfate	S
+other	-	-	-	-	hydrogen sulfide	H2S
+other	-	-	-	-	tartarate	tartarate
+amino acid	Taurine	taurine	taurine	Taurine	taurine	taurine
+vitamin	-	-	-	-	thiamine / vitamin B1	vitB1
+vitamin	-	-	-	-	thiamine acetate	TAA
+vitamin	-	-	-	-	thiamine aldehyde	TAD
+vitamin	-	-	-	-	thiamine phosphate	TMP
+vitamin	Thiamine pyrophosphate	-	-	Thiamine diphosphate	thiamine pyrophosphate	TPP
+vitamin	-	-	-	-	thiamine triphosphate	TPP
+other	Threonic acid	threonate	threonate	Threonic acid	threonate	threonate
+amino acid	-	-	-	-	threonine	Thr
+nucleotides	-	-	-	-	thymidine	dT
+nucleotides	Thymidine 5'-diphosphate	thymidine 5'-diphosphate	thymidine 5'-diphosphate	TDP	thymidine 5'-diphosphate	TDP
+nucleotides	Thymidine 5'-monophosphate	thymidine 5'-monophosphate	thymidine 5'-monophosphate	TMP	thymidine 5'-monophosphate	TMP
+nucleotides	Thymidine 5'-triphosphate	thymidine 5'-triphosphate	thymidine 5'-triphosphate	TTP	thymidine 5'-triphosphate	TTP
+nucleotides	-	-	-	-	thymine	thymine
+fatty acid / lipid	-	-	-	-	triethanolamine	TEA
+other	-	-	-	-	trigonelline	TRG
+amino acid	-	-	-	-	tryptamine	tryptamine
+amino acid	-	-	-	-	tryptophan	Trp
+amino acid	-	-	-	-	tyrosine	Tyr
+amino & nucleotide sugar	-	UDP-galactose	UDP-galactose	-	UDP-galactose	UDP-galactose
+amino & nucleotide sugar	Uridine diphosphate glucose	UDP-glucose	UDP-glucose	UDP-glucose	UDP-glucose	UDP-glucose
+amino & nucleotide sugar	-	-	-	-	UDP-glucuronate	UDP-G
+amino & nucleotide sugar	Uridine diphosphate-N-acetylgalactosamine	UDP-N-acetylgalactosamine	UDP-N-acetylgalactosamine	UDP-N-acetylgalactosamine	UDP-N-acetylgalactosamine	UDP-GalNAc
+amino & nucleotide sugar	Uridine diphosphate-N-acetylglucosamine	UDP-N-acetylglucosamine	UDP-N-acetylglucosamine	UDP-N-acetylglucosamine	UDP-N-acetylglucosamine	UDP-GlcNAc
+nucleotides	-	-	-	-	uracil	uracil
+nucleotides	Uric acid	urate	urate	Uric acid	urate	urate
+other	-	-	-	-	urea	urea
+nucleotides	-	ureidosuccinate	ureidosuccinate	-	ureidosuccinate	ureidosuccinate
+nucleotides	Uridine	uridine	uridine	Uridine	uridine	uridine
+nucleotides	Uridine 5'-diphosphate	uridine 5'-diphosphate	uridine 5'-diphosphate	UDP	uridine 5'-diphosphate	UDP
+nucleotides	Uridine 5'-monophosphate	uridine 5'-monophosphate	uridine 5'-monophosphate	UMP	uridine 5'-monophosphate	UMP
+nucleotides	Uridine triphosphate	uridine 5'-triphosphate	uridine 5'-triphosphate	UTP	uridine 5'-triphosphate	UTP
+fatty acid / lipid	Pentanoic Acid	-	-	Valeric acid	valerate/pentanoate	valerate
+amino acid	-	-	-	-	valine	Val
+nucleotides	-	-	-	-	xanthine	xanthine
+nucleotides	-	-	-	-	xanthosine	X
+nucleotides	Xanthylic acid	xanthosine 5'-monophosphate/xanthylic acid	xanthosine 5'-monophosphate/xanthylic acid	XMP	xanthosine 5'-monophosphate / xanthylic acid	XMP
+nucleotides	-	-	-	-	xanthurenate	xanthurenate
+PPP	D-Xylulose 5-phosphate	-	-	-	xylulose 5-phosphate	xylulose 5-phosphate

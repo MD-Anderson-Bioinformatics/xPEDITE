@@ -1,0 +1,179 @@
+<!--
+ MIT License
+
+ Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the 'Software'), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+
+### MS1 Abundance Clustering: Next-Generation Clustered Heatmap (NG-CHM)
+
+#### Hierarchical clustering
+
+[Next-generation clustered heatmap (NG-CHM)](https://bioinformatics.mdanderson.org/public-software/ngchm/){target='_blank'} software was used to process the data. NG-CHM plots are interactive and can be used for zooming, panning, searching, covariate bars, and link-outs that enable deep exploration of patterns and associations in heat maps. Note: if you do not have a wheel mouse, you can use two-finger swiping upward/downward on a touchpad to zoom.
+
+The NG-CHM Heat Map Viewer contains two panels. The Summary Panel on the left provides a full view of your heat map. The Detail Panel on the right provides a zoomed-in view of a portion of the heat map. Click anywhere on the summary picture to see the detail of that portion of the map. The green box on the Summary Panel indicates the portion of the heat map currently displayed in the Detail Panel. You may zoom in or out with the mouse scroll wheel or zoom in/out buttons to see smaller or larger portions of the map in the Detail View. Double-clicking on a cell in the Detail Panel will also zoom in and center on that cell and shift-double click will zoom out. When the zoom level permits, row and column labels will be displayed in the Detail Panel. You may also use arrow keys to move up/down/left/right one row in the Detail Panel. The divider bar may be moved by clicking on it and dragging left or right to change the relative size of the Summary and Detail Panels. There are a variety of buttons on the header bar as well to manipulate the heat map view.
+
+NG-CHMs created with the [NG-CHM R package](https://github.com/MD-Anderson-Bioinformatics/NGCHM-R){target='_blank'}.
+
+Please see https://pubmed.ncbi.nlm.nih.gov/32269754/.
+
+<!-- svg symbol taken from NG-CHM viewer:
+     https://github.com/MD-Anderson-Bioinformatics/NG-CHM/blob/main/NGCHM/WebContent/icons.svg?short_path=fffa0d9
+-->
+
+<svg style="display:none;">
+  <symbol id="icon-layers" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-layers" viewBox="0 0 16 16">
+    <path d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882l-7.5-4zm3.515 7.008L14.438 10 8 13.433 1.562 10 4.25 8.567l3.515 1.874a.5.5 0 0 0 .47 0l3.515-1.874zM8 9.433 1.562 6 8 2.567 14.438 6 8 9.433z"/>
+  </symbol>
+</svg>
+
+**Bidirectional Median Centering**
+
+A bidirectional median centered, or simply median centered, data matrix is where the column medians are subtracted from each column, then the row medians are subtracted from each row. Such normalization is performed to make patterns in the data matrix stand out in a heatmap. Without such normalization, one would typically observe some rows or columns that are saturated entirely by one color (red or blue) making patterns difficult to observe. However, a side-effect of visualizing median centered data is that because the data are altered, they may not directly correspond with patterns in other plots (like box plots) derived from non-median centered data. To circumvent that, we have included the option of visualizing non-median centered data in the NG-CHM as well by toggling to another layer using the “layer” button
+(<svg style="width:16px;height:16px;vertical-align:middle;" viewBox="0 0 20 20">
+   <use xlink:href="#icon-layers"></use>
+</svg>) in the upper right corner of the NG-CHM below.
+
+<!-- Dropdown menu for the NG-CHMs -->
+<label for='ngchm-sorting'>Choose a clustering method:</label>
+<select id='ngchm-sorting'>
+  <option value='ngchm_main'>Hierarchical Clustering</option> <!-- Default NG-CHM -->
+
+<!-- Add additional NG-CHMs if they exist -->
+```{r, results='asis', echo=FALSE, fig.width=20, fig.height=16, fig.align="center", message=FALSE, warning=FALSE}
+col_names <- c(colnames(pd))
+col_names <- col_names[col_names!="ID"]
+col_names <- col_names[col_names!="DNA"]
+col_names <- col_names[col_names!="cellCount"]
+col_names <- col_names[col_names!="tissueWeight"]
+for (col in col_names) {
+  ngchmColFilePath <- paste(reportFolderPath, 'NGCHM_', col, '_clustering.html', sep="")
+  if (file.exists(ngchmColFilePath)) {
+    cat(paste("<option value=", col, ">", paste("Supervised Clustering by ", col, sep=""), "</option>", sep=""))
+  }
+}
+```
+
+</select>
+<!-- End of the dropdown menu for the NG-CHMs -->
+
+<!-- Div for the hierarchical clustering NG-CHM (the default NG-CHM) -->
+<div id='ngchm_main' class="vis">
+
+#### Hierarchical Clustering
+
+<!-- Below is some gymnastics to include NG-CHMs as blob URLs.
+     We use blob URLs to avoid the 2MB limit on data URLs in Chrome (the limit is 500MB for blob URLs).
+
+     The basic steps are:
+      1. Include an iframe element to display the NG-CHM.
+      2. Read in the NG-CHM .html file as a base64 string. (r function `file_to_base64`)
+         - done during rendering of this .Rmd file.
+      3. Create a blob URL from the base64 string. (javascript function `createBlobURL`)
+         - must be done in the browser, not during rendering of this .Rmd file. This is why
+           the blob URL is created in a <script> block.
+      4. Set the src of the iframe to the blob URL.
+-->
+
+```{r}
+#' Convert a file to base64 string
+#'
+#' Conversion to base64 is used to pass the data from R to JavaScript.
+#'
+#' @param filePath Path to the file
+#' @return Base64 string
+file_to_base64 <- function(filePath) {
+  file_content <- readBin(filePath, "raw", file.info(filePath)$size)
+  return(openssl::base64_encode(file_content))
+}
+```
+
+<script>
+  /**
+   * Create a blob URL from a base64 string.
+   *
+   * @param {string} base64String Base64 string
+   * @return {string} Blob URL
+   */
+  function createBlobURL(base64String) {
+    const byteCharacters = atob(base64String);
+    const byteArrays = [];
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteArrays.push(byteCharacters.charCodeAt(i));
+    }
+    const byteArray = new Uint8Array(byteArrays);
+    const blob = new Blob([byteArray], {type: "text/html"});
+    const blobUrl = URL.createObjectURL(blob);
+    return blobUrl;
+  }
+</script>
+
+<iframe id='ngchm-main-iframe' loading='lazy' width='100%' height='700' scrolling='no'></iframe>
+
+```{r, echo = FALSE}
+base64String <- file_to_base64(ngchmFilePath)
+```
+
+<!-- Adding blob URL for hierarchical clustering NG-CHM -->
+<script>
+  let blobUrl = createBlobURL("`r base64String`");
+  document.getElementById('ngchm-main-iframe').src = blobUrl;
+</script>
+
+</div>  <!-- End div for Hierarchical clustering NG-CHM (id = ngchm_main) -->
+
+<!-- Include divs for additional NG-CHMs if they exist. Initially invisible to user. -->
+```{r, results='asis', echo=FALSE, fig.width=20, fig.height=16, fig.align="center", message=FALSE, warning=FALSE}
+for (col in col_names) {
+  ngchmColFilePath <- paste0(reportFolderPath, 'NGCHM_', col, '_clustering.html')
+  if (file.exists(ngchmColFilePath)) {
+    cat(paste0('<div id=', col, ' class="inv">\n'))
+    cat(paste0("#### Supervised Clustering by ", col, "\n"))
+    ngchmId <- paste0("ngchm-", col, "-iframe")
+    cat(paste0("<iframe id='", ngchmId, "' loading='lazy' width='100%' height='700' scrolling='no'></iframe>\n"))
+    cat("</div>\n")
+    base64String <- file_to_base64(ngchmColFilePath)
+    cat(paste0("<script>\n"))
+    cat(paste0("  blobUrl = createBlobURL('", base64String, "');\n"))
+    cat(paste0("  document.getElementById('", ngchmId, "').src = blobUrl;\n"))
+    cat("</script>\n")
+  }
+}
+```
+
+<!-- Event handler to for the dropdown menu. Shows/hides selected/unselected NG-CHM divs. -->
+<script>
+  document
+    .getElementById('ngchm-sorting')
+    .addEventListener('change', function () {
+      'use strict';
+      let vis = document.querySelector('.vis')
+      let target = document.getElementById(this.value);
+      if (vis !== null) {
+        vis.className = 'inv';
+      }
+      if (target !== null ) {
+        target.lastElementChild.lastElementChild.src = target.lastElementChild.lastElementChild.src;
+        target.className = 'vis';
+      }
+    });
+</script>
+
+

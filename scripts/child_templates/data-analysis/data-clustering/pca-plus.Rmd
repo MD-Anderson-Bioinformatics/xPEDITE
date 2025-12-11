@@ -1,0 +1,40 @@
+<!--
+ MIT License
+
+ Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the 'Software'), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+
+### Group Clustering: PCA-Plus
+
+This plot presents Principal component analysis (PCA), with PC1 on the x-axis and PC2 on the y-axis, as is customary. Additionally, the median values are calculated and plotted for each group. The plot is interactive.
+
+**Dispersion Separability Criterion (DSC)**: DSC metric has been designed to quantify the dissimilarity between groups within the data, and can also be used to quantify batch effects. DSC is a ratio of dispersion across batches (Db) vs. dispersion within batches (Dw). A DSC value greater than one means that there is greater dispersion, or dissimilarity, across batches than within batches, whereas a DSC of zero means there is no dissimilarity across batches. Typically, values greater than 0.3 indicate the presence of moderate batch effects, whereas a value greater than 0.6 indicate severe batch effects.
+
+**DSC p-value**: The p-value is derived empirically, using permutation tests. One thousand or more permutations are typically run on each data set, using different random permutations of the data each time. DSC values are computed for each permutation and at the end of all the runs, the proportion of values greater than the actual DSC value is computed to yield the p-value. The null hypothesis is that there are no batch effects and the data set is homogeneous in terms of batches. A p-value less than some significance threshold (usually 0.05) rejects the null hypothesis.
+
+Plots created with MBatch from the [Batch Effects Package](https://bioinformatics.mdanderson.org/public-software/tcga-batch-effects/){target='_blank'}
+
+Please see https://pubmed.ncbi.nlm.nih.gov/38260566/.
+
+```{r, results='asis', echo=FALSE, fig.width=20, fig.height=32, fig.align="center", message=FALSE, warning=FALSE}
+htmltools::includeHTML(pcaPlusFilePath)
+```
+

@@ -1,0 +1,158 @@
+/*
+
+Copyright (C) 2025 The University of Texas MD Anderson Cancer Center
+
+This file is part of xPEDITE.
+
+xPEDITE is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License Version 2 as published by the Free Software Foundation.
+
+xPEDITE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with xPEDITE.
+If not, see <https://www.gnu.org/licenses/>.
+
+*/
+
+.order-form .container {
+    color: #4c4c4c;
+    padding: 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);
+}
+
+.order-form-label {
+    margin: 8px 0 0 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.display-form-label {
+    margin: 8px 0 0 0;
+    font-size: 16px;
+    font-weight: bold;
+    width: 15%;
+}
+
+.order-form-input {
+    width: 100%;
+    padding: 8px 8px;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-radius: 3px !important;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1.2em;
+    background-color: transparent;
+    border-color: #cccccc;
+}
+
+.btn-submit:hover {
+    background-color: #090909 !important;
+}
+
+.btn-standout{
+  background-color: lightblue;
+  color: black;
+  border-color: black;
+}
+
+.inputTimePoints {
+    margin-right: 10px
+}
+
+.inputModalSubGroup {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.inputSubGroup {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.inputModalSubBatch {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.inputSubBatch {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+@media only screen and (min-width: 1200px) {
+    .container {
+        max-width: 1400px;
+    }
+}
+
+.mat-app-background {
+    background-color: #fafafa;
+    color: rgba(0, 0, 0, .87);
+}
+
+.study_option {
+    font-size: 14px;
+    padding: 0rem
+}
+
+.padbutton {
+    margin-top: 10px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+
+.batch_header {
+    background-color: #ADD8E6;
+}
+
+.group_header {
+    background-color: #FFCCCB;
+}
+
+/* for coloring items that complete OK */
+.ok_status {
+    border: 5px solid #7DCEA0 !important;
+    border-radius: 10px;
+}
+
+/* for coloring errors */
+.error_status {
+    border: 5px solid #CD6155 !important;
+    border-radius: 10px;
+}
+
+/* runStatus box (this box displays the log file during report generation) */
+#runStatus {
+  max-height: 300px;
+}
+/* the inner code block of the runStatus box */
+#status {
+  max-height: 290px;
+  overflow: scroll;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Force display of scrollbar on Mac for Safari and Chrome.
+   As best as I can tell, there is no way to force the scrollbar
+   to always be visible on a Mac with FireFox..
+*/
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+.help-block {
+    color: #DC143C; /* crimson, a red that stands out but is less harsh than ff0000 */
+}
+

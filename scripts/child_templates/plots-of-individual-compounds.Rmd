@@ -1,0 +1,118 @@
+<!--
+ MIT License
+
+ Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the 'Software'), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+
+
+<div id="searchClasses">
+To display the plot for a compound, click that compound's name in the list below. This list is scrollable,
+and the search box can be used to refine the list of compounds shown. You can select multiple compounds using shift- or command-click to display multiple plots at once.
+</div>
+
+<!-- <button id='downloadPlots'>Download PowerPoint of All Plots</button> -->
+<div class="spinner-border" role="status" id="downloadspinner" style="display:none;">
+  <div class="loading-spinner"></div>
+  Generating PowerPoint file of individual compound plots.
+</div>
+
+<div id="PubChemID"></div>
+<div id="plotShow"></div>
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, dev=c('png','pdf','svg','tiff')}
+htmltools::tagList(
+  htmltools::tags$link(href = "/app/scripts/resources/jquery-ui.min.css", rel = "stylesheet",
+    id = "jquery-ui_min_css"),
+  htmltools::tags$script(src = "/app/scripts/resources/jquery-ui.min.js", id = "jquery-ui_min_js"),
+  #htmltools::tags$script(src = "https://cdn.jsdelivr.net/npm/pptxgenjs@3.8.0/dist/pptxgen.bundle.js",
+    #id = "pptxgen_bundle_js"),
+  htmltools::tags$script(src = "/app/scripts/resources/d3-3.2.7.min.js",
+    id = "d3_min_js"),
+  htmltools::tags$script(src = "/app/scripts/resources/dimple-2.3.0.min.js",
+    id = "dimple_latest_min_js")
+)
+
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+mulcolors <- gg_color_hue(max(sapply(batches, length)))
+
+## refmetNameDict elements are: [ <systematic name>, <refmet name> ]
+## curatedNameDict elements are: [ <systematic name>, <curated name> ]
+refmetNameDict <- cbind(rownames(df), df$refmetName)
+curatedNameDict <- cbind(rownames(df), rownames(df))
+log_list(refmetNameDict)
+log_list(curatedNameDict)
+log_trace_dataframe(df)
+df_to_js(mulcolors, var_name="mulcolors")
+df_to_js(multicat, var_name="multicat")
+df_to_js(refmetNameDict, var_name="refmetNameDict")
+df_to_js(curatedNameDict, var_name="curatedNameDict")
+df_to_js(params$normalization, var_name="normalization")
+```
+
+```{js, class.source="jsclasses1", echo=FALSE}
+function median(values) {
+  if (values.length === 0) throw new Error("No inputs");
+  values.sort(function(a, b) {
+    return a - b;
+  });
+  var half = Math.floor(values.length / 2);
+  if (values.length % 2) return values[half];
+  return (values[half - 1] + values[half]) / 2.0;
+}
+function showhide(id){
+  $("#"+id).toggle()
+}
+$( '#fold-change' ).on("click", "tr", function(){
+  let metaName = $(this).children('td:first-child').text()
+  $("#searchCompounds").val(metaName);
+  $("#searchClass").val(metaName);
+  drawPlot(metaName,0);
+});
+```
+<script>
+/* The keydown event listener was co-opted by cytoscape.js-edge-editing (in the Pathways section)
+   resulting in users being unable to use arrow keys to navigate the searchCompounds select box.
+   So here we add a keydown event listener to re-enable this feature. See GitLab issue #71
+*/
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById("searchCompounds").addEventListener("keydown", function(e) {
+     if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+     let selectedOption = e.target.selectedOptions[0];
+     if (!selectedOption) return;
+     if (e.key === "ArrowUp") {
+       if (selectedOption.previousElementSibling) {
+         e.target.value = selectedOption.previousElementSibling.value;
+       }
+     }
+     if (e.key === "ArrowDown") {
+       if (selectedOption.nextElementSibling) {
+         e.target.value = selectedOption.nextElementSibling.value
+       }
+     }
+     let event = new Event("change");
+     e.target.dispatchEvent(event);
+  })
+})
+</script>

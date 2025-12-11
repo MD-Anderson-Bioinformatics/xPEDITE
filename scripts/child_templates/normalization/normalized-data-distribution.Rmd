@@ -1,0 +1,66 @@
+<!--
+ MIT License
+
+ Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the 'Software'), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+
+## Normalized Data Distribution
+
+Click the button below to show/hide the data distribution plots.
+
+<button class="btn btn-primary" onclick="showhide('data_distribution')"> Show/Hide Data distribution </button>
+
+<div id="data_distribution" style="display:none">
+
+### With Respect to Samples {.tabset .tabset-fade}
+
+#### Linear scale
+
+```{r, fig.width=12, fig.height=6, echo=FALSE, fig.align="center", message=FALSE, warning=FALSE}
+generate_p1_boxplot(m1, major, variable="variable", value="value", textsize=10, xlabel="Samples", ylabel="Peak Area")
+```
+
+#### Log10 scale
+
+```{r, fig.width=12, fig.height=6, echo=FALSE, fig.align="center", message=FALSE, warning=FALSE}
+generate_p1_boxplot(m1, major, "variable", "log(value,10)", 10, "Samples", "Peak Area")
+```
+
+### {-}
+
+```{r, fig.width=12, fig.height=6, echo=FALSE, fig.align="center", message=FALSE, warning=FALSE, results='asis'}
+if (params$normalization == "totalarea") {
+  cat("#### Total Peak area of each sample (used for normalization)\n")
+  pd$ID <- factor(pd$ID, levels=mixedsort(pd$ID))
+  generate_p1_barPlot(pd, major, "ID", "TotalArea")
+}
+```
+
+```{r, fig.width=12, fig.height=6, echo=FALSE, fig.align="center", message=FALSE, warning=FALSE, results='asis'}
+if (sum(pd$NAfreq)!=0) {
+  cat("#### Frequency of missing compounds per sample\n")
+  generate_p1_barPlot(pd, major, "ID", "NAfreq")
+}
+```
+
+### {-}
+</div>
+

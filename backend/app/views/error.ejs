@@ -1,0 +1,43 @@
+<%#
+
+Copyright (C) 2025 The University of Texas MD Anderson Cancer Center
+
+This file is part of xPEDITE.
+
+xPEDITE is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License Version 2 as published by the Free Software Foundation.
+
+xPEDITE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with xPEDITE.
+If not, see <https://www.gnu.org/licenses/>.
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <!-- add style because we aren't loading the css for the whole site -->
+    <style>
+      body {
+        font-family: sans-serif;
+        font-family: 'Open Sans', sans-serif;
+      }
+      .error_status {
+        color: red;
+        font-size: 1.5em;
+      }
+    </style>
+</head>
+
+<body>
+    <h1>Error</h1>
+    <p class="error_status"><%= errormessage %></p>
+</body>
+
+</html>

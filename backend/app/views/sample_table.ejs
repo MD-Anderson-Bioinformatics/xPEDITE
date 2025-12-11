@@ -1,0 +1,78 @@
+<%#
+
+Copyright (C) 2025 The University of Texas MD Anderson Cancer Center
+
+This file is part of xPEDITE.
+
+xPEDITE is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License Version 2 as published by the Free Software Foundation.
+
+xPEDITE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with xPEDITE.
+If not, see <https://www.gnu.org/licenses/>.
+
+%>
+
+<form id="adminSampleForm" method="post" action="/update_sample">
+    <table class='table table-bordered pastableTable' id="adminSampleTable">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="checkall" /></th>
+                <% for (var i = 0; i < studyDetail.allkeys.length; i++) { %>
+                    <% if (studyDetail.allkeys[i]=="sample_id" ) {%>
+                        <th><button class="CopyColumn btn btn-sm btn-primary" data-target=".sampleID">Copy ID</button>
+                            <%= studyDetail.allkeys[i] %>
+                        </th>
+
+                        <% } else if (studyDetail.allkeys[i]=="cust_sampleid" ){ %>
+                            <th>
+                                <%= studyDetail.allkeys[i] %>
+                            </th>
+                            <% } else { %>
+                                <% if (studyDetail.allkeys[i].includes("batch") ) {%>
+                                    <th class="newHeader batch_header">
+                                        <% } else { %>
+                                            <th class="newHeader">
+                                                <% } %>
+
+                                                    <%= studyDetail.allkeys[i] %>
+                                                        <% if (i<4) {%>
+                                                            <input type='checkbox' class='colheader' style='float:right' checked></input>
+                                                            <% } else { %>
+                                                                <input type='checkbox' class='colheader' style='float:right'></input>
+                                                                <% } %>
+                                            </th>
+                                            <% } %>
+                                                <% } %>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (var i = 0; i < studyDetail.samples.length; i++) { %>
+                <tr>
+                    <td><input type="checkbox" name="adminRowSelection" class="adminrow" checked /></td>
+                    <% for (var n = 0; n < studyDetail.allkeys.length; n++) { %>
+
+                        <% if (studyDetail.allkeys[n]=="sample_id") {%>
+                            <td class="sampleID" name="sample_id_<%= i %>">
+                                <%= studyDetail.samples[i]._doc[studyDetail.allkeys[n]] %>
+                            </td>
+                            <% } else if (studyDetail.allkeys[n]!="cust_sampleid" && studyDetail.allkeys[n]!="sample_type"){ %>
+                                <td><input type="text" class="newColumn" name="<%= studyDetail.allkeys[n]+ '_'+i %>" value="<%= studyDetail.samples[i]._doc[studyDetail.allkeys[n]] %>"></td>
+                                <% } else { %>
+                                    <td>
+                                        <%= studyDetail.samples[i]._doc[studyDetail.allkeys[n]] %>
+                                    </td>
+                                    <% } %>
+                                        <% } %>
+                </tr>
+                <% } %>
+        </tbody>
+    </table>
+    <input type="hidden" id="numSamples" name="numSamples" value="<%= studyDetail.samples.length %>">
+    <!--
+    <input type="hidden" id="studyName" name="studyName" value="<%= studyDetail.study.study_name %>">
+    -->
+</form>

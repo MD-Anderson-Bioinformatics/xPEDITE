@@ -1,0 +1,117 @@
+<%#
+
+Copyright (C) 2025 The University of Texas MD Anderson Cancer Center
+
+This file is part of xPEDITE.
+
+xPEDITE is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License Version 2 as published by the Free Software Foundation.
+
+xPEDITE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with xPEDITE.
+If not, see <https://www.gnu.org/licenses/>.
+
+%>
+
+<%- include('header'); %>
+
+<% if (studies!="empty" ) { %>
+    <div id="alldiv">
+        <div class="container">
+            <p>Current User:
+                <%= user %>
+            </p>
+            <input type="button" value="Log Out" class="btn btn-primary btn-sm" id="logout" style="float: right;">
+            <div class="col-16 mt-3">
+                <h2>
+                    <%= type %> studies</h2>
+                <div class="row">
+                    <% if (type != "All" ) { %>
+                        <input type="button" class="btn btn-primary btn-sm padbutton" id="show_all_studies" value="Show all studies" />
+                        <% } %>
+                            <% if (type != "Removed" ) { %>
+                                <input type="button" class="btn btn-primary btn-sm padbutton" id="show_removed_studies" value="Show removed studies" />
+                                <% } %>
+                                    <% if (type != "Archived" ) { %>
+                                        <input type="button" class="btn btn-primary btn-sm padbutton" id="show_archived_studies" value="Show archived studies" />
+                                        <% } %>
+                </div>
+                <table id="studies_table" class='table table-bordered'>
+                    <thead>
+                        <tr>
+                            <th>Study Name</th>
+                            <th>Submitter first name</th>
+                            <th>Submitter last name</th>
+                            <th>Submitter email</th>
+                            <th>Submitter phone</th>
+                            <th>Date Created</th>
+                            <th>Status</th>
+                            <th>Select</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (var i = 0; i < studies.length; i++) { %>
+                            <tr>
+                                <td id="study_name_<%= i %>">
+                                    <%= studies[i].study_name %>
+                                </td>
+                                <td>
+                                    <%= studies[i].submitter_firstname %>
+                                </td>
+                                <td>
+                                    <%= studies[i].submitter_lastname %>
+                                </td>
+                                <td>
+                                    <%= studies[i].submitter_email %>
+                                </td>
+                                <td>
+                                    <%= studies[i].submitter_phone %>
+                                </td>
+                                <td>
+                                    <%= (studies[i].last_modified.getMonth()+1)+"/"+studies[i].last_modified.getDate()+"/"+studies[i].last_modified.getFullYear() %>
+                                </td>
+                                <td>
+                                    <%= studies[i].status %>
+                                </td>
+                                <td>
+                                    <button id="select_study_<%= i %>" class="btn btn-primary btn-sm select_study">Select</button>
+                                </td>
+                                <td>
+                                    <!-- <button id="remove_study_<%= i %>" class="btn btn-primary btn-sm remove_study">Remove</button> -->
+                                    <select name="operation_type" class="form-control study_option" id="study_option_<%= i %>">
+                                                <option value="please_select" selected disabled>Please select</option>
+                                                <% if (type != "All" ) { %>
+                                                    <option value="recover_study" id="recover_study_<%= i %>">Recover</option>
+                                                <% } %>
+                                                <% if (type != "Removed" ) { %>
+                                                    <option value="remove_study" id="remove_study_<%= i %>">Remove</option>
+                                                <% } %>
+                                                <% if (type != "Archived" ) { %>
+                                                    <option value="archive_study" id="archive_study_<%= i %>">Archive</option>
+                                                <% } %>
+                                            </select>
+                                </td>
+                            </tr>
+                            <% } %>
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <script>
+      $.fn.dataTable.moment('M/D/YYYY', 'en-US');
+      $("#studies_table").DataTable({
+          "aaSorting": [],
+          "paging": true,
+          "dom": "Bfrtip",
+          "searching": true
+      });
+    </script>
+<%- include('footer'); %>

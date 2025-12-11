@@ -1,0 +1,57 @@
+<!--
+ MIT License
+
+ Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the 'Software'), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+
+### Pairwise Comparison Between `r major` {.tabset .tabset-fade}
+
+ANOVA was performed for all pairs of samples. FDR-adjusted p-values across all metabolites were calculated and visualized as a dot plot. Metabolites with a p-value less than this displayed cutoff are shown in the dot plot. Complete ANOVA results of all metabolites can be obtained from the Table (Data matrix tab). Dot plots and data matrix tables are interactive. Column names indicate the compared pairwise comparison. The dot size represents the significance based on the adjusted p-value. There are a variety of buttons on the header bar to manipulate the dot plot view. One can zoom, pan, and download the plot.
+
+<!-- one of the tabs under 'Pairwise Comparison Between `r major`' -->
+#### Graphical represenation: Differentially expressed compounds
+
+<div id="pairmajor"></div> <!-- div filled by js/dynamicANOVA.js -->
+
+<!-- second tab onder 'Pairwise Comparison between `r major`' -->
+#### Data matrix: Complete ANOVA results {.active}
+
+Difference of abundance between normalized intensities of two time-points, upper and lower confidence interval
+along with respective p-values for each combination are listed in the table. ANOVA is separately performed for each
+time-point. Adj.Pvalues represent the p-value of each treatment group adjusted across other pairwise comparison
+at a single time-point. FDR corrected P-values across all compounds are also added to the table.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center", results="asis"}
+pvals_tb_group <- read.csv(v2majorFilePath, header = TRUE, row.names = 1, check.names = FALSE)
+if (!is.null(pvals_tb_group$Metabolite)) {
+  rownames(pvals_tb_group) <- pvals_tb_group$Metabolite
+  pvals_tb_group <- subset(pvals_tb_group, select=-Metabolite)
+}
+primaryPathways=c()
+if ("Primary Pathway" %in% colnames(df)) {
+  for (rowname in rownames(pvals_tb_group)){
+    primaryPathway=df$"Primary Pathway"[rownames(df)==rowname]
+    primaryPathways<-append(primaryPathways,primaryPathway)
+  }
+  pvals_tb_group$"Primary Pathway"<-primaryPathways
+}
+generate_dataTable(pvals_tb_group)
+```

@@ -1,0 +1,48 @@
+<!--
+ MIT License
+
+ Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the 'Software'), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+
+## Data Table
+
+The data table provides normalized metabolite relative abundance. The tables are interactive and each column can be
+sorted in ascending or descending order. Users can search for a specific metabolite using the search bar and copy
+or download the data in CSV or Excel format.
+
+```{r, results='asis', echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+colnames <- colnames(df)
+# Reorder Primary Pathway to the front
+if ("Primary Pathway" %in% colnames) {
+  colnames <- colnames[!colnames %in% c("Primary Pathway")]
+  colnames <- c("Primary Pathway",colnames)
+  df <- df[, colnames]
+}
+# Get a version of df without the refmet names to display in the data table. Keep the version with refmet names for use later in the report.
+df_noRefmet <- df
+if ("refmetName" %in% colnames) {
+  colnames <- colnames[!colnames %in% c("refmetName")]
+  df_noRefmet <- df[,colnames]
+  colnames <- c("refmetName",colnames)
+  df <- df[, colnames]
+}
+generate_dataTable(df_noRefmet)
+```

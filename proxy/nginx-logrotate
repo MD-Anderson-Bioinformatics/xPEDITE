@@ -1,0 +1,30 @@
+# Copyright (C) 2025 The University of Texas MD Anderson Cancer Center
+#
+# This file is part of xPEDITE.
+#
+# xPEDITE is free software: you can redistribute it and/or modify it under the terms of the
+# GNU General Public License Version 2 as published by the Free Software Foundation.
+#
+# xPEDITE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with xPEDITE.
+# If not, see <https://www.gnu.org/licenses/>.
+
+
+/logs/*.log {
+    monthly # rotate logs monthly
+    missingok # don't error if the log file is missing
+    rotate 6 # keep 6 months of logs
+    size 2M # rotate if file size exceeds 2M
+    compress # compress rotated logs
+    delaycompress # delay compression of the previous log file until the next rotation
+    notifempty # don't rotate empty log files
+    create 0640 nginx nginx # create new log file with specified permissions and ownership
+    sharedscripts # run postrotate script only once, not for each log file
+    postrotate
+        # Signal nginx to reopen log files
+        [ -f /var/run/nginx.pid ] && kill -USR1 $(cat /var/run/nginx.pid)
+    endscript
+}

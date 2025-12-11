@@ -1,0 +1,35 @@
+{
+    "name": "docker-demo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "startDev": "nodemon index.js",
+        "lint:js": "node_modules/eslint/bin/eslint.js ./ ./**/*.js --fix; exit 0",
+        "lint:css": "node_modules/csslint/cli.js public/css/; exit 0"
+    },
+    "keywords": [],
+    "license": "ISC",
+    "dependencies": {
+        "@rgrove/parse-xml": "^4.2.0",
+        "archiver": "^6.0.1",
+        "axios": "^1.6.2",
+        "body-parser": "^1.20.2",
+        "csv-parser": "^3.0.0",
+        "data-forge": "^1.10.2",
+        "data-forge-fs": "^0.0.9",
+        "ejs": "^3.1.5",
+        "express": "^4.16.4",
+        "express-fileupload": "^1.2.1",
+        "mongoose": "^5.4.19",
+        "winston": "^3.7.2",
+        "winston-daily-rotate-file": "^5.0.0"
+    },
+    "devDependencies": {
+        "@babel/eslint-parser": "^7.23.10",
+        "csslint": "^0.10.0",
+        "eslint": "^8.55.0",
+        "nodemon": "^3.0.2"
+    }
+}

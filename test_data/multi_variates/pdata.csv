@@ -1,0 +1,10 @@
+ID,one,two,three,four
+sample_1,A,AA,AAA,AAAA
+sample_2,A,AA,BBB,BBBB
+sample_3,A,BB,BBB,BBBB
+sample_4,B,BB,BBB,BBBB
+sample_5,B,AA,BBB,BBBB
+sample_6,B,AA,AAA,BBBB
+sample_7,B,AA,AAA,AAAA
+sample_8,C,AA,AAA,AAAA
+sample_9,D,DD,DDDD,DDDDD

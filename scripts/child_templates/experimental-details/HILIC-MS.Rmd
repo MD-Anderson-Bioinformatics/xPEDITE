@@ -1,0 +1,29 @@
+<!--
+ MIT License
+
+ Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the 'Software'), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+-->
+
+
+## Polar metabolite profiling by HILIC-MS
+
+To determine the relative abundance of polar metabolites, extracts were prepared and analyzed by hydrophilic interaction chromatography-mass spectrometry (HILIC-MS). Metabolites were extracted using ice-cold 0.1% formic acid in acetonitrile: water = 90:10. Extracts were centrifuged at 17,000 g for 5 min at 4°C, and supernatants were transferred to autosampler injection vials for LCMS analysis. HILIC mobile phase A (MPA; Strong) was 20 mM ammonium acetate and 20 mM ammonium hydroxide in water:acetonitrile = 95:5, and mobile phase B (MPB; week) was acetonitrile. A Thermo Dionex Vanquish LC system included an Xbridge BEH amide column (3.5 µm particle size, 100 x 4.6 mm) with column compartment set at 35°C. The autosampler tray was chilled to 4°C. The mobile phase flow rate was 300 µL/min, and the gradient elution program was: 0-3 min, 85% MPB; 3-10 min, 85-30% MPB; 10-20 min, 30-2% MPB; 20-25 min, 2% MPB; 26-30 min, 2-85% MPB. The total run time was 30 min. Data were acquired using a Thermo Fisher Scientific Orbitrap Exploris 240 Mass Spectrometer under ESI positive and negative (polarity switching) ionization mode at a resolution of 240,000 with a scan range of 70-1000 m/z. All raw data files were imported into Compound Discoverer software for processing. The relative abundance (peak area) of each metabolite was normalized by total peak intensity.
+

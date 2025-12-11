@@ -1,0 +1,109 @@
+name: xpedite
+
+# Copyright (C) 2025 The University of Texas MD Anderson Cancer Center
+#
+# This file is part of xPEDITE.
+#
+# xPEDITE is free software: you can redistribute it and/or modify it under the terms of the
+# GNU General Public License Version 2 as published by the Free Software Foundation.
+#
+# xPEDITE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with xPEDITE.
+# If not, see <https://www.gnu.org/licenses/>.
+
+services:
+  ngchm:
+    image: ngchm/ngchm:${NGCHMTAG:-2.26.0}
+    restart: "no"
+    network_mode: none
+  pathways:
+    image: pathwaysviz:${PWVIZTAG:-latest}
+    restart: "no"
+    network_mode: none
+    volumes:
+      - xpedite-pathways:/pathways:rw
+  proxy:
+    build:
+      context: proxy
+    environment:
+      # For LDAP-JWT authentication. IP address and port for LDAP-JWT instance
+      LDAP_JWT_HOST: ${LDAP_JWT_HOST}
+      URL_PATHNAME: ${URL_PATHNAME:-xPEDITE}
+    image: nginx
+    container_name: xpedite_proxy
+    ports:
+      - 9433:443
+    depends_on:
+      - backend
+    networks:
+      - xpedite-net
+    restart: always
+    volumes:
+      - xpedite-nginx-log:/logs
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: ${BUILD_TARGET:-prod}
+    image: xpedite
+    container_name: xpedite
+    volumes_from:
+      - ngchm
+    volumes:
+      - ${AUTHENTICATORS_PATH_HOST:-./.authenticators}:${AUTHENTICATORS_PATH:-/home/nodeuser/.authenticators}
+      - xpedite-data:/data
+      - xpedite-logs:/logs
+      - xpedite-reports:/reports
+      - xpedite-pathways:/pathways:ro
+    environment:
+      # For LDAP-JWT authentication. IP address and port for LDAP-JWT instance
+      LDAP_JWT_HOST: ${LDAP_JWT_HOST}
+      # For LDAP-JWT authentication. Optional active directory group allowed access to xPEDITE
+      AUTHORIZED_GROUP: ${AUTHORIZED_GROUP}
+      # Log file path inside the container:
+      LOG_FILE_PATH: /home/nodeuser/xpedite_backend.log
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      # Set to '0' to allow self-signed certificate from proxy container
+      NODE_TLS_REJECT_UNAUTHORIZED: '0'
+      # Report template version (appears in table at top of generated report)
+      TEMPLATEVERSION: ${TEMPLATEVERSION:-xpedite-version-number}
+      NGCHMVIEWERVERSION: ${NGCHMTAG:-2.26.0}
+      # base pathname for url (exampole full URL: https://<hostname of server>/${URL_PATHNAME})
+      URL_PATHNAME: ${URL_PATHNAME:-xPEDITE}
+      # Path to authentication configuration file inside container:
+      AUTHENTICATORS_PATH: ${AUTHENTICATORS_PATH:-/home/nodeuser/.authenticators}
+      # Headings to appear at top of generated reports:
+      REPORT_TITLE: "Metabolomics Data Analysis"
+      REPORT_AUTHOR: "Metabolomics Facility"
+      REPORT_INSTITUTION: "My Institution"
+    depends_on:
+      - mongo
+      - pathways
+    networks:
+      - xpedite-net
+    restart: always
+  mongo:
+    build:
+      context: mongo
+    image: mongo
+    container_name: xpedite_mongo
+    volumes:
+      - xpedite-mongodata:/data/db
+    networks:
+      - xpedite-net
+    restart: always
+
+volumes:
+  xpedite-mongodata:
+  xpedite-pathways:
+  xpedite-nginx-log:
+  xpedite-data:
+  xpedite-logs:
+  xpedite-reports:
+
+networks:
+  xpedite-net:
+    external: true

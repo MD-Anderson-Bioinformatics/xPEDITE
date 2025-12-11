@@ -1,0 +1,345 @@
+---
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    toc_float:
+       collapsed: true
+       smooth_scroll: true
+    toc_depth: 2
+    theme:  cerulean
+    css: "style.css"
+title: "`r params$title`"
+params:
+  studyNumber:
+  PI:
+  title:
+  author:
+  assayType:
+  institution:
+  samples:
+  reportFolder:
+  toolUsed:
+  normalization:
+  NGCHMVIEWERVERSION:
+  NGCHMRVERSION:
+  MBATCHVERSION:
+  MBATCHUTILSVERSION:
+  TEMPLATEVERSION: v1
+plot: NA
+---
+
+<!--
+MIT License
+
+Copyright (c) 2025 The University of Texas MD Anderson Cancer Center
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the 'Software'), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+
+```{r, setup, echo=FALSE, warning=FALSE, results="asis"}
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+source("./report_function.R")
+source("./futileLogging.R")
+suppressMessages(library(dplyr))
+suppressMessages(library(ggplot2))
+suppressMessages(library(reshape2))
+suppressMessages(library(knitr))
+suppressMessages(library(DT))
+suppressMessages(library(stringr))
+suppressMessages(library(heatmaply))
+suppressMessages(library(RColorBrewer))
+suppressMessages(library(data.table))
+suppressMessages(library(gtools))
+suppressMessages(library(jamba))
+suppressMessages(library(tools))
+suppressMessages(library(pander))
+suppressMessages(library(htmltools))
+suppressMessages(library(knitr))
+
+reportFolderPath <- params$reportFolder
+logfile <- paste(reportFolderPath, "/logfile.txt", sep = "")
+initLogging(Sys.getenv("LOG_LEVEL"), logfile)
+Normalized_datafile <- paste(reportFolderPath, "Preprocessed_3_noNA_ISnormalized.tsv", sep = "")
+df <- read.table(Normalized_datafile, header = TRUE, row.names = 1, sep = "\t", quote = NULL, check.names = FALSE)
+df <- df[, mixedorder(colnames(df))]
+df$metabolite <- rownames(df)
+## primaryPathwayDict elements are: [ <compound name>, <primary pathway> ]
+primaryPathwayDict <- cbind(rownames(df), df$"Primary Pathway")
+log_list(primaryPathwayDict)
+df_to_js(primaryPathwayDict, var_name="primaryPathwayDict")
+df_clean <- df[, !(colnames(df) %in% c("refmetName", "Primary Pathway"))]
+dfm <- melt(df_clean, id.vars = "metabolite")
+pd <- read.table(paste(reportFolderPath, "CovariateData.tsv", sep = ""), sep = "\t", header = TRUE, check.names = FALSE)
+pd_batches <- read.table(paste(reportFolderPath, "BatchData.tsv", sep = ""), sep = "\t", header = TRUE, check.names = FALSE)
+variables <- checkVariables(pd)
+log_list(variables)
+major <- sym(variables$major)
+minor <- sym(variables$minor)
+single <- variables$single
+groups <- variables$groups
+multicat <- variables$multicat
+log_trace("major: ", major)
+log_trace("minor: ", minor)
+log_trace("single: ", single)
+log_trace("groups: ", groups)
+log_list(groups)
+log_trace("multicat: ", multicat)
+m1 <- merge(dfm, pd, by.x = "variable", by.y = "ID")
+m1 <- m1[mixedOrder(m1$variable), ]
+if (major != "NA" && minor != "NA") {
+  m1 <- m1[order(m1[[major]], m1[[minor]]), ]
+} else if (major != "NA" && minor == "NA") {
+  m1 <- m1[order(m1[[major]]), ]
+}
+m1$variable <- factor(m1$variable, levels = unique(m1$variable))
+```
+
+<!-- Initialize pathways data -->
+
+```{r, child="child_templates/load-pathways-data.Rmd"}
+```
+
+<!-- Report Details table -->
+
+```{r, child="child_templates/report-details-table.Rmd"}
+```
+
+<!-- Experimental Details (H1) -->
+
+# Experimental Details
+
+```{r, child=paste("child_templates/experimental-details/",params$assayType,".Rmd",sep='')}
+```
+
+<!-- Sample Table (H1) -->
+
+# Sample Table
+
+```{r, child="child_templates/sample-table.Rmd"}
+```
+
+<!-- Normalization (H1) -->
+
+# Normalization
+
+<!-- normalization description text child document included based on the normalization method chosen -->
+
+```{r, child=paste("child_templates/normalization/description/",params$normalization,".Rmd",sep='')}
+```
+
+<!-- Data Table (H2) -->
+
+```{r, child="child_templates/normalization/data-table.Rmd"}
+```
+
+<!-- Normalized Data Distribution (H2) -->
+
+```{r, child="child_templates/normalization/normalized-data-distribution.Rmd"}
+```
+
+<!-- Data Analysis (H1) -->
+
+<!--
+    The code block below defines various file names. If none of these files exist, the "Data Analysis"
+    section will not be included in the report.
+
+    The existence of individual files will be used to determine which sections to include under "Data Analysis".
+-->
+
+```{r, results='asis', echo=FALSE, fig.width=20, fig.height=32, fig.align="center", message=FALSE, warning=FALSE}
+pcaPlusFilePath <- paste(reportFolderPath, "pca_plus.html", sep = "")
+ngchmFilePath <- paste(reportFolderPath, "NGCHM_clustering.html", sep = "")
+pvalsANOVAFilePath <- paste(reportFolderPath, "pvals_ANOVA.csv", sep = "")
+v1majorFilePath <- paste(reportFolderPath, "pvals_v1_", major, ".csv", sep = "")
+v2majorFilePath <- paste(reportFolderPath, "pvals_v2_", major, ".csv", sep = "") # should exist if v1majorFilePath exists
+v1minorFilePath <- paste(reportFolderPath, "pvals_v1_", minor, ".csv", sep = "")
+v2minorFilePath <- paste(reportFolderPath, "pvals_v2_", minor, ".csv", sep = "") # should exist if v1minorFilePath exists
+multiLinearFilePath <- paste(reportFolderPath, "pvals_multi_linear.csv", sep = "")
+
+fileList <- c(
+  pcaPlusFilePath,
+  ngchmFilePath,
+  pvalsANOVAFilePath,
+  v1majorFilePath,
+  v2majorFilePath,
+  v1minorFilePath,
+  v2minorFilePath,
+  multiLinearFilePath
+)
+
+if (any(file.exists(fileList))) {
+  cat("# Data Analysis\n")
+}
+if (any(file.exists(c(pcaPlusFilePath, ngchmFilePath)))) {
+  cat("## Data Clustering\n")
+}
+```
+
+<!-- PCA Plus Plots (H3) -->
+
+```{r, child=if (file.exists(pcaPlusFilePath)) "child_templates/data-analysis/data-clustering/pca-plus.Rmd"}
+```
+
+<!-- NGCHMs (H3) -->
+
+```{r, child=if (file.exists(ngchmFilePath)) "child_templates/data-analysis/data-clustering/ngchm.Rmd"}
+```
+
+<!-- Differential Analysis (H2) -->
+
+<!--
+     The code block below defines various file names. If none of these exist, then the "Differential Analysis"
+     section will not be included in the report.
+
+     The existence of individual files will be used to determine which sections to include under "Differential Analysis".
+-->
+
+```{r, results='asis', echo=FALSE, fig.width=20, fig.height=32, fig.align="center", message=FALSE, warning=FALSE}
+differentialAnalysisFiles <- c(
+  pvalsANOVAFilePath,
+  v1majorFilePath,
+  v2majorFilePath,
+  v1minorFilePath,
+  v2minorFilePath,
+  multiLinearFilePath
+)
+if (any(file.exists(differentialAnalysisFiles))) {
+  cat("## Differential Analysis\n")
+}
+```
+
+<!-- Multi-class Comparison (H3) -->
+
+```{r, child=if (file.exists(pvalsANOVAFilePath)) "child_templates/differential-analysis/differential-analysis.Rmd"}
+```
+
+<!--  Pairwise Comparison major (H3) -->
+
+```{r, child=if (file.exists(v1majorFilePath)) "child_templates/differential-analysis/pairwise-comparison-major.Rmd"}
+```
+
+<!--  Pairwise Comparison minor (H3) -->
+
+```{r, child=if (file.exists(v1minorFilePath)) "child_templates/differential-analysis/pairwise-comparison-minor.Rmd"}
+```
+
+<!-- Multi-Category Comparison (H3) -->
+
+```{r, child=if (file.exists(multiLinearFilePath)) "child_templates/differential-analysis/multiLinear.Rmd"}
+```
+
+<!--
+    The code block below defines variables used by the javascript code (in files js/*.js).
+    The function `df_to_js` is used to convert the R data frame to a javascript object.
+-->
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+batches <- list()
+for (group in groups){
+  batches[[group]] <- unique(pd[[group]])
+  m1[[group]] <- as.factor(m1[[group]])
+}
+m1$metabolite <- as.factor(m1$metabolite)
+if (file.exists(v1majorFilePath)) {
+  pvals <- read.csv(v1majorFilePath, check.names = FALSE)
+  pvals <- pvals[, !(colnames(pvals) %in% c("diff", "lwr", "upr"))]
+  df_to_js(pvals, var_name="pvalsmajor") ## used in dynamicANOVA.js, dynamicVolcano.js
+}
+if (file.exists(v1minorFilePath)) {
+  pvals <- read.csv(v1minorFilePath, check.names = FALSE)
+  pvals <- pvals[, !(colnames(pvals) %in% c("diff", "lwr", "upr"))]
+  df_to_js(pvals, var_name="pvalsminor") ## used in dynamicANOVA.js, dynamicVolcano.js
+}
+if (file.exists(multiLinearFilePath)) {
+  pvals <- read.csv(multiLinearFilePath, check.names = FALSE)
+  df_to_js(pvals, var_name="pvalsmulti") ## used in dynamicANOVA.js
+}
+df_to_js(groups, var_name="groups") # used in Smooth.js, dynamicVolcano.js, plotMetabolites.js
+df_to_js(batches, var_name="batches") # used in Smooth.js, dynamicVolcano.js, plotMetabolites.js
+df_to_js(single, var_name="single") # used in dynamicANOVA.js, plotMetabolites.js
+df_to_js(m1[, !(colnames(m1) %in% c("variable", "TotalArea", "NAfreq"))], var_name="alldata") # used in dynamicVolcano.js, plotMetabolites.js
+```
+
+<!-- Volcano Plot or Fold Change section (H2) -->
+
+```{r}
+showVolcanoPlot <- FALSE # If true, show volcano plot (i.e. have both fold change and pvalues to display)
+showFoldChangeOnly <- FALSE # If true, only show fold change table and NOT volcano plot (i.e. no pvalues available)
+if (
+  !multicat &&
+    (params$normalization != "zscore") &&
+    (params$normalization != "median")
+) {
+
+  if (!single && file.exists(v1majorFilePath)) {
+    showVolcanoPlot <- TRUE
+  } else {
+    showFoldChangeOnly <- TRUE
+  }
+
+} # end if for !multicat and normalization
+
+bool_to_js(showVolcanoPlot, var_name="showVolcanoPlot") # used in dynamicVolcano.js
+bool_to_js(showFoldChangeOnly, var_name="showFoldChangeOnly") # used in dynamicVolcano.js
+```
+
+```{r, results='asis', child=if (showVolcanoPlot) "child_templates/volcano.Rmd"}
+```
+
+```{r child=if (showFoldChangeOnly) "child_templates/fold-change.Rmd"}
+```
+
+<!-- Time Series Delta AUC (H2) -->
+
+```{r, results='asis', echo=FALSE, warning=FALSE, message=FALSE, fig.align="center"}
+aucfiles <- list.files(path = reportFolderPath, pattern = "(deltaAUC).*\\.csv$")
+```
+
+<script id="Smooth_js" src="./js/Smooth.js"></script> <!-- calcDeltaAUC from Smooth.js is used in deltaAUC.Rmd -->
+
+```{r, child=if (length(aucfiles) > 0) "child_templates/deltaAUC.Rmd"}
+```
+
+<!-- Plots of Individual Compounds (H1) -->
+
+# Plots of Individual Compounds
+
+```{r, child="child_templates/plots-of-individual-compounds.Rmd"}
+```
+
+<script id="dynamicANOVA_js" src="./js/dynamicANOVA.js"></script>
+<script id="plotMetabolites_js" src="./js/plotMetabolites.js"></script>
+<script id="dynamicVolcano_js" src="./js/dynamicVolcano.js"></script>
+
+<!-- Pathways (H1) -->
+
+# Pathways
+
+```{r, child="child_templates/pathways.Rmd"}
+```
+
+<!-- Batch Effects Analysis (H1) -->
+
+```{r, results='asis', echo=FALSE, fig.width=20, fig.height=32, fig.align="center", message=FALSE, warning=FALSE}
+batchEffectsAnalysisFilePath <- paste(reportFolderPath, "pca_plus_batch.html", sep = "")
+```
+
+```{r, child=if (file.exists(batchEffectsAnalysisFilePath)) "child_templates/batch-effects-analysis.Rmd"}
+```
+
