@@ -100,3 +100,12 @@ This project contains code and templates under multiple licenses:
 - **Third-party libraries in /scripts/resources**: as noted
   - The license and copyright information is as shown in these files
 - **Everything else**: GPLv2
+
+## Authors
+
+- Mary Rohrdanz
+- Jun Ma
+- Thomas Laroche
+- Bradley Broom
+- Tod Casasent
+- Chris Wakefiled
