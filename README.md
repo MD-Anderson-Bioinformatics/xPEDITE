@@ -7,13 +7,14 @@ web-based platform to generate interactive HTML data reports
 
 The following are basic setup instructions.
 
-### 1. Acquire Accessory Docker Images
+### 1. Accessory Docker Images
 
 xPEDITE uses several other images:
 
-1. NG-CHM (ngchm): available from [docker hub](https://hub.docker.com/r/ngchm/ngchm)
-2. Pathways Visualization (pathwaysviz): available on GitHub
+1. Pathways Visualization (pathwaysviz): available on GitHub
    - Follow build instructions: [https://github.com/MD-Anderson-Bioinformatics/sbgnviz_pathway](https://github.com/MD-Anderson-Bioinformatics/sbgnviz_pathway)
+2. NG-CHM (ngchm): available from [docker hub](https://hub.docker.com/r/ngchm/ngchm)
+   - Will be pulled automatically by docker compose
 
 ### 2. Configure Authentication
 
