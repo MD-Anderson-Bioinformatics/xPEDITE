@@ -56,7 +56,10 @@ inside the container). See defaults in docker-compose.yml.
 If using LDAP-JWT authentication: set appropriate values for environment
 variables `LDAP_JWT_HOST` and optional `AUTHORIZED_GROUP` before running docker compose.
 
+Create the network, build images, and start containers:
+
 ```bash
+docker network create xpedite-net
 docker compose build
 docker compose up
 ```
