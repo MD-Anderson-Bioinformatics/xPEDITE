@@ -165,7 +165,7 @@ class ReportOB {
     }
 
     async saveReport() {
-        log.info("Adding report to databse: " + this.name);
+        log.info("Adding report to database: " + this.name);
         let onestudy = await this.study.getStudy()
         let newReport = new Report({
             study_id: onestudy._id,
