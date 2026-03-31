@@ -48,6 +48,11 @@ services:
       context: .
       dockerfile: backend/Dockerfile
       target: ${BUILD_TARGET:-prod}
+      args:
+        NODE_UID: ${NODE_UID:-1001}
+        NODE_USER: ${NODE_USER:-nodeuser}
+        NODE_GID: ${NODE_GID:-1001}
+        NODE_GRP: ${NODE_GRP:-nodegroup}
     image: xpedite
     container_name: xpedite
     volumes_from:
