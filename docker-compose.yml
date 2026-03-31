@@ -76,9 +76,9 @@ services:
       # Path to authentication configuration file inside container:
       AUTHENTICATORS_PATH: ${AUTHENTICATORS_PATH:-/home/nodeuser/.authenticators}
       # Headings to appear at top of generated reports:
-      REPORT_TITLE: "Metabolomics Data Analysis"
-      REPORT_AUTHOR: "Metabolomics Facility"
-      REPORT_INSTITUTION: "My Institution"
+      REPORT_TITLE: ${REPORT_TITLE:-Metabolomics Data Analysis}
+      REPORT_AUTHOR: ${REPORT_AUTHOR:-Metabolomics Facility}
+      REPORT_INSTITUTION: ${REPORT_INSTITUTION:-My Institution}
     depends_on:
       - mongo
       - pathways
