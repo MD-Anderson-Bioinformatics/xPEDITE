@@ -21,7 +21,7 @@
 ##  *** START of node-base ***
 ####
 
-FROM node:22.4.1-bookworm-slim AS node-base
+FROM node:22.22.0-slim@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94 AS node-base
 
 ## Install openssh-client and openssh-server before ssh
 ## because otherwise ssh installs the version with CVE-2021-41617

@@ -341,7 +341,7 @@ async function generateReport(req, res) {
                       "reportfile_name": report.reportfile_name
                   })
                   newReport.updateStatus("Generated")
-                  log.info("User " + req.user.user_name + " generated report: " + report.name);
+                  log.info(`User ${report.generated_by_user} generated report ${report.reportfile_name} in study ${req.body.studyName}`)
               })
               fs.appendFileSync(reportFolder + 'logfile.txt', 'Report saved.');
           })
