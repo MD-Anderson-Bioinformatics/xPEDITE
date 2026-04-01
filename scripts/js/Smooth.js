@@ -556,97 +556,122 @@ function median(values) {
     return (values[half - 1] + values[half]) / 2.0;
 }
 
+/**
+ * Draws an AUC (Area Under the Curve) plot using Plotly, displaying median
+ * intensity values across time points for each major batch group. Each group
+ * is rendered as both a scatter marker trace and a smoothed line trace.
+ *
+ * @function drawAUCPlot
+ * @param {Object[]} metaValue - Array of data objects, where each object
+ *     represents a single observation. Each object should contain keys
+ *     corresponding to the major and minor group variables, as well as
+ *     a `value` property for the intensity measurement.
+ * @param {string} metaName - Name of the metabolite being plotted. Used as
+ *     the plot title and in the export filename.
+ * @param {string|HTMLElement} plotdiv - The ID of the DOM element (or the
+ *     element itself) in which Plotly will render the plot.
+ *
+ * @requires groups {string[]} - Global array where index 0 is the major
+ *     grouping variable (e.g. batch) and index 1 is the minor grouping
+ *     variable (e.g. timepoint).
+ * @requires batches {Object} - Global object mapping group variable names
+ *     to arrays of their unique values.
+ * @requires mulcolors {string[]} - Global array of color strings used to
+ *     color each major batch group.
+ * @requires median {function} - Function that computes the median of a
+ *     numeric array.
+ * @requires Smooth {function} - Smooth.js function used to generate
+ *     interpolated line traces between data points.
+ *
+ * @example
+ * const metaValue = [
+ *     { batch: 'A', hours: '0hours', value: 1200 },
+ *     { batch: 'A', hours: '2hours', value: 3400 },
+ *     { batch: 'B', hours: '0hours', value: 980 },
+ *     { batch: 'B', hours: '2hours', value: 2100 },
+ * ];
+ * drawAUCPlot(metaValue, 'Glutamine', 'plot-container');
+ */
 function drawAUCPlot(metaValue, metaName, plotdiv) {
-    var major = groups[0]
-    var minor = groups[1]
-    var majorbatch = batches[major]
-    const sortAlphaNum = (a, b) => a.toString().localeCompare(b.toString(), 'en', { numeric: true })
-    var minorbatch = batches[minor].sort(sortAlphaNum)
-    var checknumber = minorbatch.every(function(element) {
-        return typeof element === 'number';
-    });
-    if (checknumber) {
-        minorbatch.sort(function(a, b) {
-            return a - b;
-        });
+    const major = groups[0];
+    const minor = groups[1];
+    const majorBatch = batches[major];
+
+    const sortAlphaNum = (a, b) => a.toString().localeCompare(b.toString(), 'en', { numeric: true });
+    const minorBatch = batches[minor].sort(sortAlphaNum);
+    const allNumeric = minorBatch.every(el => typeof el === 'number');
+    if (allNumeric) {
+        minorBatch.sort((a, b) => a - b);
     }
-    // var minorbatch = batches[minor].sort()
-    var xlabels = []
-    var numvalues
 
+    const reducedData = majorBatch.flatMap((batch) => {
+        const batchRows = metaValue.filter(line => line[major] === batch);
+        return minorBatch.map((time) => {
+            const timeValues = batchRows
+                .filter(line => line[minor] === time)
+                .map(line => line.value);
+            return {
+                metabolite: metaName,
+                value: median(timeValues),
+                [major]: batch,
+                [minor]: time
+            };
+        });
+    });
 
-    var reduce = majorbatch.map((batch, index) => {
-        var group = metaValue.filter((line) => {
-            return line[major] == batch
-        })
-        return minorbatch.map((time) => {
-            var timevalues = group.filter((line) => {
-                return line[minor] == time
-            })
-            var times = timevalues.map((line) => line.value)
-            var medianvalue = median(times)
-            var medianObject = {
-                "metabolite": metaName,
-                "value": medianvalue
-            }
-            medianObject[major] = batch
-            medianObject[minor] = time
-            return medianObject
-        })
-    })
-    var reduceData = [].concat.apply([], reduce);
+    // Extract unit from first data label for axis title
+    const firstLabel = reducedData[0]?.[minor]?.toString() ?? '';
+    const timeUnit = firstLabel.replace(/[\d.]/g, '').trim();
+    const xAxisTitle = timeUnit || minor;
 
-    var trace1 = majorbatch.map((batch, index) => {
-        var group1 = reduceData.filter((line) => {
-            return line[major] == batch
-        })
-        let values = group1.map((line) => line.value)
-        var trace = {
-            x: Array(group1.length).fill().map((element, index) => index + 1),
-            y: values,
-            mode: "markers",
+    const markerTraces = majorBatch.map((batch, index) => {
+        const batchData = reducedData.filter(line => line[major] === batch);
+        return {
+            x: batchData.map(line => parseFloat(line[minor])),
+            y: batchData.map(line => line.value),
+            mode: 'markers',
             name: batch,
-            marker: {
-                color: mulcolors[index]
-            }
-        }
-        return trace
-    })
-
-
-    var trace2 = majorbatch.map((batch, index) => {
-        var group1 = reduceData.filter((line) => {
-            return line[major] == batch
-        })
-        let values = group1.map((line) => line.value)
-        numvalues = values.length
-        let smooth = Smooth(values, { scaleTo: [1, numvalues] })
-        let interval = numvalues / 200
-        let yvalue = []
-        let xvalue = []
-        xlabels = group1.map((line) => line[minor])
-        for (let i = 1; i <= numvalues; i = i + interval) {
-            xvalue.push(i)
-            yvalue.push(smooth(i))
-        }
-        var trace = {
-            y: yvalue,
-            x: xvalue,
-            name: batch,
-            mode: 'lines',
-            marker: {
-                color: mulcolors[index]
-            }
+            marker: { color: mulcolors[index] }
         };
-        return trace
-    })
-    var data = []
-    trace1.forEach((one) => data.push(one))
-    trace2.forEach((one) => data.push(one))
-    let start = 1
-    let stop = numvalues + 1
-    let xvals = Array(Math.ceil(stop - start)).fill(start).map((x, y) => x + y)
-    var layout = {
+    });
+
+    const lineTraces = majorBatch.map((batch, index) => {
+        const batchData = reducedData.filter(line => line[major] === batch);
+        const values = batchData.map(line => line.value);
+        const numericTimes = batchData.map(line => parseFloat(line[minor]));
+        const numValues = values.length;
+
+        const smooth = Smooth(values, { scaleTo: [0, numValues - 1] });
+        const steps = 200;
+        const xSmooth = [];
+        const ySmooth = [];
+
+        for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const rawIndex = t * (numValues - 1);
+            const lo = Math.floor(rawIndex);
+            const hi = Math.min(lo + 1, numValues - 1);
+            const frac = rawIndex - lo;
+
+            // Interpolate real time value between neighboring points
+            const timeValue = numericTimes[lo] + frac * (numericTimes[hi] - numericTimes[lo]);
+
+            xSmooth.push(timeValue);
+            ySmooth.push(smooth(rawIndex));
+        }
+
+        return {
+            x: xSmooth,
+            y: ySmooth,
+            mode: 'lines',
+            name: `${batch} (smoothed)`,
+            marker: { color: mulcolors[index] }
+        };
+    });
+
+    const data = [...markerTraces, ...lineTraces];
+
+    const layout = {
         title: metaName,
         yaxis: {
             title: 'Intensity',
@@ -655,20 +680,21 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
             exponentformat: 'e'
         },
         xaxis: {
-            tickvals: xvals,
-            ticktext: xlabels
+            title: xAxisTitle,
+            type: 'linear'
         },
         boxmode: 'group'
     };
-    var config = {
-        toImageButtonOptions: {
-          format: 'svg', // one of png, svg, jpeg, webp
-          filename: metaName + ' deltaAUC',
-          height: 600,
-          width: 1000,
-          scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
-        }
-    }
-    Plotly.newPlot(plotdiv, data, layout, config);
 
+    const config = {
+        toImageButtonOptions: {
+            format: 'svg',
+            filename: `${metaName} deltaAUC`,
+            height: 600,
+            width: 1000,
+            scale: 1
+        }
+    };
+
+    Plotly.newPlot(plotdiv, data, layout, config);
 }
