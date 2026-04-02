@@ -557,6 +557,7 @@ function median(values) {
 }
 
 // Helper function to convert hex to rgba with opacity
+// (Used to make plot tool tips easier to read)
 function hexToRgba(hex, alpha) {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
@@ -567,24 +568,25 @@ function hexToRgba(hex, alpha) {
 /**
  * Draws an AUC (Area Under the Curve) plot using Plotly, displaying median
  * intensity values across time points for each major batch group. Each group
- * is rendered as both a scatter marker trace and a smoothed line trace.
+ * is rendered as both a scatter marker trace and  cubic spline line trace.
  *
  * @function drawAUCPlot
  * @param {Object[]} metaValue - Array of data objects, where each object
  *     represents a single observation. Each object should contain keys
- *     corresponding to the major and minor group variables, as well as
- *     a `value` property for the intensity measurement.
+ *     corresponding to group variables (one of them a Time), a `value`
+ *     property for the intensity measurement, and a 'metabolite' key for the
+ *     compound measured (see example below)
  * @param {string} metaName - Name of the metabolite being plotted. Used as
  *     the plot title and in the export filename.
  * @param {string|HTMLElement} plotdiv - The ID of the DOM element (or the
  *     element itself) in which Plotly will render the plot.
  *
  * @requires groups {string[]} - Global array where index 0 is the major
- *     grouping variable (e.g. batch) and index 1 is the minor grouping
- *     variable (e.g. timepoint).
+ *     grouping variable (e.g. batch) and index 1 is the time-based grouping
+ *     variable (e.g. 'timepoint', 'Time').
  * @requires batches {Object} - Global object mapping group variable names
- *     to arrays of their unique values.
- * @requires mulcolors {string[]} - Global array of color strings used to
+ *     to arrays of their unique values. Keys should match entries in 'groups'
+ * @requires mulcolors {string[]} - Global array of hex color strings used to
  *     color each major batch group.
  * @requires median {function} - Function that computes the median of a
  *     numeric array.
@@ -593,42 +595,50 @@ function hexToRgba(hex, alpha) {
  *
  * @example
  * const metaValue = [
- *     { batch: 'A', hours: '0hours', value: 1200 },
- *     { batch: 'A', hours: '2hours', value: 3400 },
- *     { batch: 'B', hours: '0hours', value: 980 },
- *     { batch: 'B', hours: '2hours', value: 2100 },
+ *     { metabolite: 'Glutamine', major_batch: 'A', Time: '0hours', value: 0.34 },
+ *     { metabolite: 'Glutamine', major_batch: 'A', Time: '1hours', value: 0.21 },
+ *     { metabolite: 'Glutamine', major_batch: 'B', Time: '0hours', value: 0.98 },
+ *     { metabolite: 'Glutamine', major_batch: 'B', Time: '1hours', value: 1.02 },
+ *     ...
+ *     { metabolite: 'Citric acid', major_batch: 'A', Time: '0hours', value: 0.54 },
+ *     { metabolite: 'Citric acid', major_batch: 'A', Time: '1hours', value: 0.82 },
+ *     { metabolite: 'Citric acid', major_batch: 'B', Time: '0hours', value: 0.01 },
+ *     { metabolite: 'Citric acid', major_batch: 'B', Time: '1hours', value: 0.87 },
+ *     ...
  * ];
  * drawAUCPlot(metaValue, 'Glutamine', 'plot-container');
  */
 function drawAUCPlot(metaValue, metaName, plotdiv) {
     const major = groups[0];
-    const minor = groups[1];
+    const minor = groups[1]; // the time-based grouping
     const majorBatch = batches[major];
 
-    const sortAlphaNum = (a, b) => a.toString().localeCompare(b.toString(), 'en', { numeric: true });
-    const minorBatch = batches[minor].map(String).sort(sortAlphaNum);
-    const allNumeric = minorBatch.every(el => typeof el === 'number');
-    if (allNumeric) {
-        minorBatch.sort((a, b) => a - b);
-    }
 
+    // collect numerica time point values.
+    const minorBatch = batches[minor]
+      .map(val => parseFloat(val))
+      .sort((a, b) => a - b)
+
+    // Flatten the major/minor combinations into one array, computing median values per group
     const reducedData = majorBatch.flatMap((batch) => {
+        // get all entries in metaValue belonging to this major batch
         const batchRows = metaValue.filter(line => String(line[major]) === String(batch));
+        // For each minor value, collect and reduce matching rows to a single median
         return minorBatch.map((time) => {
             const timeValues = batchRows
-                .filter(line => line[minor] === time)
-                .map(line => line.value);
-            return {
+                .filter(line => parseFloat(line[minor]) === time) // all entries for this time point
+                .map(line => line.value);             // the raw values for each entry
+            return { // `reducedData` will be an array of objects, each with these keys:
                 metabolite: metaName,
-                value: median(timeValues),
+                value: median(timeValues), //median across all samples in this group for this time point
                 [major]: batch,
                 [minor]: time
             };
         });
     });
 
-    // Extract unit from first data label for axis title
-    const firstLabel = reducedData[0]?.[minor]?.toString() ?? '';
+    // Infer the time unit from the first data point (assumes consistent time units)
+    const firstLabel = batches[minor][0]?.toString() ?? '';
     const timeUnit = firstLabel.replace(/[\d.]/g, '').trim();
     const xAxisTitle = timeUnit || minor;
 
@@ -642,7 +652,7 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
             marker: { color: mulcolors[index], size: 10 },
             hovertemplate: `<b>${batch}</b><br>${xAxisTitle}: %{x}<br>Intensity: %{y:.2e}<extra></extra>`,
             hoverlabel: {
-                bgcolor: hexToRgba(mulcolors[index], 0.5),  // 70% opacity = lighter
+                bgcolor: hexToRgba(mulcolors[index], 0.5),  // 50% opacity = lighter
                 font: { color: 'black', size: 14 }
             },
         };
@@ -654,7 +664,8 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
         const numericTimes = batchData.map(line => parseFloat(line[minor]));
         const numValues = values.length;
 
-        const smooth = Smooth(values, { scaleTo: [0, numValues - 1] });
+        // Construct cubic spline for line trace
+        const smooth = Smooth(values, { scaleTo: [0, numValues - 1] }); // `smooth` is a function
         const steps = 200;
         const xSmooth = [];
         const ySmooth = [];
@@ -687,7 +698,7 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
     const data = [...markerTraces, ...lineTraces];
 
     const layout = {
-        title: Array.isArray(metaName) ? metaName[0] : metaName, //for whatever reason, the initial load is, e.g. [metaName]
+        title: Array.isArray(metaName) ? metaName[0] : metaName, //for whatever reason, the initial page load hast metaName an array: [metaName]
         yaxis: {
             title: {
               text: 'Intensity',
