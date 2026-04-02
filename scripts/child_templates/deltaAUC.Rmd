@@ -40,7 +40,7 @@
 </style>
 
 This table allows the user to rank-sort significantly modulated metabolites based on areas under the
-curve (AUC). Areas are estimated using the splines method. The dropdown can be used to
+curve (AUC). Areas are estimated via integration of cubic spline fits. The dropdown can be used to
 change groups to compare. The table can be downloaded from the buttons above the table.
 
 The various table quantities are calculated as follows:

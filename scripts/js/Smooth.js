@@ -677,7 +677,7 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
             x: xSmooth,
             y: ySmooth,
             mode: 'lines',
-            name: `${batch} (smoothed)`,
+            name: `${batch} (cubic spline)`,
             line: { width: 3 },
             hoverinfo: 'none',
             marker: { color: mulcolors[index] }
