@@ -556,6 +556,14 @@ function median(values) {
     return (values[half - 1] + values[half]) / 2.0;
 }
 
+// Helper function to convert hex to rgba with opacity
+function hexToRgba(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 /**
  * Draws an AUC (Area Under the Curve) plot using Plotly, displaying median
  * intensity values across time points for each major batch group. Each group
@@ -598,14 +606,14 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
     const majorBatch = batches[major];
 
     const sortAlphaNum = (a, b) => a.toString().localeCompare(b.toString(), 'en', { numeric: true });
-    const minorBatch = batches[minor].sort(sortAlphaNum);
+    const minorBatch = batches[minor].map(String).sort(sortAlphaNum);
     const allNumeric = minorBatch.every(el => typeof el === 'number');
     if (allNumeric) {
         minorBatch.sort((a, b) => a - b);
     }
 
     const reducedData = majorBatch.flatMap((batch) => {
-        const batchRows = metaValue.filter(line => line[major] === batch);
+        const batchRows = metaValue.filter(line => String(line[major]) === String(batch));
         return minorBatch.map((time) => {
             const timeValues = batchRows
                 .filter(line => line[minor] === time)
@@ -631,7 +639,12 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
             y: batchData.map(line => line.value),
             mode: 'markers',
             name: batch,
-            marker: { color: mulcolors[index] }
+            marker: { color: mulcolors[index], size: 10 },
+            hovertemplate: `<b>${batch}</b><br>${xAxisTitle}: %{x}<br>Intensity: %{y:.2e}<extra></extra>`,
+            hoverlabel: {
+                bgcolor: hexToRgba(mulcolors[index], 0.5),  // 70% opacity = lighter
+                font: { color: 'black', size: 14 }
+            },
         };
     });
 
@@ -665,6 +678,8 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
             y: ySmooth,
             mode: 'lines',
             name: `${batch} (smoothed)`,
+            line: { width: 3 },
+            hoverinfo: 'none',
             marker: { color: mulcolors[index] }
         };
     });
@@ -672,18 +687,29 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
     const data = [...markerTraces, ...lineTraces];
 
     const layout = {
-        title: metaName,
+        title: Array.isArray(metaName) ? metaName[0] : metaName, //for whatever reason, the initial load is, e.g. [metaName]
         yaxis: {
-            title: 'Intensity',
+            title: {
+              text: 'Intensity',
+              font: { size: 20 }
+            },
+            tickfont: { size: 14 },
             zeroline: false,
             showexponent: 'all',
             exponentformat: 'e'
         },
         xaxis: {
-            title: xAxisTitle,
+            title: {
+              text: xAxisTitle,
+              font: { size: 20 }
+            },
+            tickfont: { size: 14 },
             type: 'linear'
         },
-        boxmode: 'group'
+        boxmode: 'group',
+        legend: {
+          font: { size: 14 }
+        }
     };
 
     const config = {
