@@ -664,6 +664,11 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
         const numericTimes = batchData.map(line => parseFloat(line[minor]));
         const numValues = values.length;
 
+        // Smooth requires at least 2 data points
+        if (numValues < 2) {
+            return null; // Skip batches with insufficient data
+        }
+
         // Construct cubic spline for line trace
         const smooth = Smooth(values, { scaleTo: [0, numValues - 1] }); // `smooth` is a function
         const steps = 200;
@@ -693,7 +698,7 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
             hoverinfo: 'none',
             marker: { color: mulcolors[index] }
         };
-    });
+    }).filter(trace => trace !== null);
 
     const data = [...markerTraces, ...lineTraces];
 
