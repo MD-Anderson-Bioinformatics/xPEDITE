@@ -614,7 +614,7 @@ function drawAUCPlot(metaValue, metaName, plotdiv) {
     const majorBatch = batches[major];
 
 
-    // collect numerica time point values.
+    // collect numeric time point values.
     const minorBatch = batches[minor]
       .map(val => parseFloat(val))
       .sort((a, b) => a - b)
