@@ -28,6 +28,10 @@ services:
   proxy:
     build:
       context: proxy
+      args:
+       NGINX_UID: ${NGINX_UID:-1001}
+       NGINX_GID: ${NGINX_GID:-1001}
+       NGINX_GRP: ${NGINX_GRP:-nginx_grp}
     environment:
       # For LDAP-JWT authentication. IP address and port for LDAP-JWT instance
       LDAP_JWT_HOST: ${LDAP_JWT_HOST}
