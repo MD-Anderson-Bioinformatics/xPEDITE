@@ -55,14 +55,12 @@ if (process.env.NODE_TLS_REJECT_UNAUTHORIZED == '0') {
  */
 const connectWithRetry = () => {
   const mongoUrl =  'mongodb://mongo:27017/expressmongo';
-  mongoose.connect(mongoUrl, {
-    useNewUrlParser: true
-  })
+  mongoose.connect(mongoUrl)
   .then(() => {
     log.info('Connected to mongoDB. URL: ' + mongoUrl);
   })
   .catch((err) => {
-    log.error('mongoDB connection failed. Trying again in 5 seconds..', err.toString());
+    log.error('mongoDB connection failed. Trying again in 5 seconds..' + err.toString());
     setTimeout(connectWithRetry, 5000);
   });
 }
