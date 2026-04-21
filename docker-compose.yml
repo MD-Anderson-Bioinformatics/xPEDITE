@@ -16,11 +16,11 @@ name: xpedite
 
 services:
   ngchm:
-    image: ngchm/ngchm:${NGCHMTAG:-2.26.0}
+    image: ${NGCHM_RE:-ngchm}/ngchm:${NGCHMTAG:-2.26.0}
     restart: "no"
     network_mode: none
   pathways:
-    image: pathwaysviz:${PWVIZTAG:-latest}
+    image: ${PATHWAYS_RE:-pathways}/pathwaysviz:${PWVIZTAG:-latest}
     restart: "no"
     network_mode: none
     volumes:
@@ -28,11 +28,14 @@ services:
   proxy:
     build:
       context: proxy
+      args:
+       NGINX_UID: ${NGINX_UID:-1001}
+       NGINX_GID: ${NGINX_GID:-1001}
     environment:
       # For LDAP-JWT authentication. IP address and port for LDAP-JWT instance
       LDAP_JWT_HOST: ${LDAP_JWT_HOST}
       URL_PATHNAME: ${URL_PATHNAME:-xPEDITE}
-    image: nginx
+    image: ${NGINX_RE:-nginx}/nginx:${TAG:-latest}
     container_name: xpedite_proxy
     ports:
       - 9433:443
@@ -48,7 +51,10 @@ services:
       context: .
       dockerfile: backend/Dockerfile
       target: ${BUILD_TARGET:-prod}
-    image: xpedite
+      args:
+        NODE_UID: ${NODE_UID:-1001}
+        NODE_GID: ${NODE_GID:-1001}
+    image: ${XPEDITE_RE:-xpedite}/xpedite:${TAG:-latest}
     container_name: xpedite
     volumes_from:
       - ngchm
@@ -76,9 +82,9 @@ services:
       # Path to authentication configuration file inside container:
       AUTHENTICATORS_PATH: ${AUTHENTICATORS_PATH:-/home/nodeuser/.authenticators}
       # Headings to appear at top of generated reports:
-      REPORT_TITLE: "Metabolomics Data Analysis"
-      REPORT_AUTHOR: "Metabolomics Facility"
-      REPORT_INSTITUTION: "My Institution"
+      REPORT_TITLE: ${REPORT_TITLE:-Metabolomics Data Analysis}
+      REPORT_AUTHOR: ${REPORT_AUTHOR:-Metabolomics Facility}
+      REPORT_INSTITUTION: ${REPORT_INSTITUTION:-My Institution}
     depends_on:
       - mongo
       - pathways
@@ -88,7 +94,7 @@ services:
   mongo:
     build:
       context: mongo
-    image: mongo
+    image: ${MONGO_RE:-mongo}/mongo:${TAG:-latest}
     container_name: xpedite_mongo
     volumes:
       - xpedite-mongodata:/data/db

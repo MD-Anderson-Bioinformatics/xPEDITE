@@ -186,7 +186,7 @@ RUN cd /app && npm install --omit=dev && \
     mkdir -p /data/ && \
     mkdir -p /reports/ && \
     mkdir -p ${PATHWAY_LOADER} && \
-    chown -R ${NODE_USER}:${NODE_GRP} /home/${NODE_USER} ${PATHWAY_LOADER} /data /reports /app && \
+    chown -R ${NODE_USER}:${NODE_GRP} /home/${NODE_USER} ${PATHWAY_LOADER} /data /reports /app /workspace && \
     R CMD javareconf
 
 EXPOSE 3000

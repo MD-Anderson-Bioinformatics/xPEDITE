@@ -34,7 +34,7 @@ library("readxl")
 # if two covariates, and one of the covariates is "Time", always set the "Time" as minor.
 # if more than two covariates, set major and minor to NA, so the pipeline knows there are more than two covariates.
 # @params pd : sample information
-#         normalizaton: normalization method
+#         normalization: normalization method
 # Returns major covariate, minor covariate, regenerated pd, list of covariates as list
 # Most of the statistics analysis is done based on the assumption of two covariates, so it is important to set major and minor covariate.
 get_MajorMinor<-function(pd,normalization){
@@ -68,6 +68,19 @@ get_MajorMinor<-function(pd,normalization){
             groups<-c(minor,major)
             major = groups[1]
             minor = groups[2]
+            # verify time entries have at least some numeric part
+            numeric_part <- as.numeric(gsub("[^0-9.]", "", pd[[minor]]))
+            if (any(is.na(numeric_part))) {
+              log_error("All time entries in pdata must contain some numeric part. Example: '0hours', '1hours', etc")
+              stop("All time entries in pdata must contain some numeric part. Example: '0hours', '1hours', etc")
+            }
+            # verify time entries have the same units
+            units <- gsub("[0-9.]", "", pd[[minor]])
+            unique_units <- unique(units)
+            if (length(unique_units) > 1) {
+              log_error(paste0("Time units in pdata must be identical. Found: ", paste(unique_units, collapse=", ")))
+              stop(paste0("Time units in pdata must be identical. Found: ", paste(unique_units, collapse=", ")))
+            }
         }
     } else if (length(col_names)>=4) {
         groups<-col_names

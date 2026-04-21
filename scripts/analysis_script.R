@@ -268,25 +268,7 @@ get_FDR<-function(df_com){
 }
 
 
-deltaAUC <- function(x1, y1, x2, y2){
-  firstAUC = AUC(x1, y1, method = "spline")
-  secondAUC = AUC(x2, y2, method = "spline")
-  if( is.na(firstAUC) || is.na(secondAUC) ){
-     return(NA)
-  }
-  delta = secondAUC - firstAUC
-  if( firstAUC != 0 ) {
-     percDeltaAUC = delta / firstAUC
-  } else {
-     # A result can’t be computed here but because we are only interested in high deltas, this result will be filtered out down the line
-     percDeltaAUC = 0
-  }
-  return ( c(delta, percDeltaAUC) )
-}
-
-
 signDeltaAUC <- function(x1, y1, x2, y2, overlapOnly = T, numBins = 1000){
-
     # set range of x-values based on using overlapping x-values only or full range
    if (length(x1)!=length(x2)){
         if (length(x1)-length(x2)==-1){
@@ -468,7 +450,6 @@ run_deltaAUC <- function (pd,df,major,minor){
         y2<-df_b[i,]
         if (length(y2 %>% select(where(function(x) any(!is.na(x)))))!=0 && length(y1 %>% select(where(function(x) any(!is.na(x)))))!=0 ){
             result <- signDeltaAUC(x1,y1,x2,y2)
-            # result <- deltaAUC(x1,y1,x2,y2)
         }else{
             # result <- c(NaN,NaN)
             result <- c(NaN,NaN,NaN,NaN,NaN,NaN,NaN)
