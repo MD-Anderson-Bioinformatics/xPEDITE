@@ -62,7 +62,7 @@ const connectWithRetry = () => {
     log.info('Connected to mongoDB. URL: ' + mongoUrl);
   })
   .catch((err) => {
-    log.error('mongoDB connection failed. Trying again in 5 seconds..', err.toString());
+    log.error('mongoDB connection failed. Trying again in 5 seconds..' + err.toString());
     setTimeout(connectWithRetry, 5000);
   });
 }
