@@ -349,8 +349,7 @@ async function generateReport(req, res) {
                   const scriptPath = process.env.POST_PROCESS_SCRIPT || '/override/post_process.sh';
                   if (fs.existsSync(scriptPath)) {
                       log.info("Running post-processing script for report: " + req.body.reportName);
-                      const metadataPath = '/data/' + req.body.studyName + '/metadata.json';
-                      const postProc = spawn(scriptPath, [metadataPath]);
+                      const postProc = spawn(scriptPath, [reportFolder + 'metadata.json']);
                       postProc.stdout.on('data', (data) => {
                           fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + data);
                       });
