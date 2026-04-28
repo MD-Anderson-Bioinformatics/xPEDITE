@@ -208,7 +208,8 @@ var StudyPage = (function() {
             samples: JSON.stringify(samples),
             assay_type: $('#assay_type').val(),
             tool_used: $('#tool_used').val(),
-            datafile: $('#uploaded_files').val()
+            datafile: $('#uploaded_files').val(),
+            run_postprocessing: $('#run_postprocessing').is(':checked')
         }
         $("#spinwheel").show()
         $.ajax({

@@ -22,6 +22,7 @@ const fs = require('fs');
 const archiver = require('archiver');
 
 const util = require('util');
+const { spawn } = require('child_process');
 const exec = util.promisify(require('child_process').exec);
 const fileUpload = require('express-fileupload');
 const schema = require("./schema")
@@ -344,6 +345,29 @@ async function generateReport(req, res) {
                   log.info(`User ${report.generated_by_user} generated report ${report.reportfile_name} in study ${req.body.studyName}`)
               })
               fs.appendFileSync(reportFolder + 'logfile.txt', 'Report saved.');
+              if (req.body.run_postprocessing === 'true') {
+                  const scriptPath = process.env.POST_PROCESS_SCRIPT || '/override/post_process.sh';
+                  if (fs.existsSync(scriptPath)) {
+                      log.info("Running post-processing script for report: " + req.body.reportName);
+                      const postProc = spawn(scriptPath, [reportFolder]);
+                      postProc.on('close', (exitCode) => {
+                          if (exitCode === 0) {
+                              log.info("Post-processing completed for report: " + req.body.reportName);
+                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.');
+                          } else {
+                              log.error("Post-processing script exited with code " + exitCode + " for report: " + req.body.reportName);
+                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing failed (exit code ' + exitCode + ').');
+                          }
+                      });
+                      postProc.on('error', (err) => {
+                          log.error("Error running post-processing script: " + err);
+                          fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing error: ' + err.message);
+                      });
+                  } else {
+                      log.warn("Post-processing requested but script not found: " + scriptPath);
+                      fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing requested but script not found: ' + scriptPath);
+                  }
+              }
           })
           .catch((err) => {
               log.error("Error generating report '" + req.body.reportName + "'");

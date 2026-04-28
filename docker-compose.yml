@@ -64,6 +64,8 @@ services:
       - xpedite-logs:/logs
       - xpedite-reports:/reports
       - xpedite-pathways:/pathways:ro
+      # Optional: mount post-processing script from xpedite-override repo
+      # - ${POST_PROCESS_SCRIPT_HOST:-/path/to/override/post_process.sh}:/override/post_process.sh:ro
     environment:
       # For LDAP-JWT authentication. IP address and port for LDAP-JWT instance
       LDAP_JWT_HOST: ${LDAP_JWT_HOST}
@@ -85,6 +87,8 @@ services:
       REPORT_TITLE: ${REPORT_TITLE:-Metabolomics Data Analysis}
       REPORT_AUTHOR: ${REPORT_AUTHOR:-Metabolomics Facility}
       REPORT_INSTITUTION: ${REPORT_INSTITUTION:-My Institution}
+      # Optional: path inside the container to the post-processing script (default: /override/post_process.sh)
+      POST_PROCESS_SCRIPT: ${POST_PROCESS_SCRIPT:-/override/post_process.sh}
     depends_on:
       - mongo
       - pathways
