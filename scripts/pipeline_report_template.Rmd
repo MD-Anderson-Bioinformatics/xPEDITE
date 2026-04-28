@@ -30,6 +30,7 @@ params:
   submitterEmail:
   pdataPath:
   analyzedDataPath:
+  studyFolder:
 plot: NA
 ---
 

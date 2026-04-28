@@ -224,7 +224,8 @@ class StudyOB {
             "submitterEmail": study.submitter_email,
             "pdataPath": this.studyFolder + "pdata.csv",
             "analyzedDataPath": this.studyFolder + body.datafile,
-            "reportFolder": this.studyFolder + body.reportName + "/"
+            "reportFolder": this.studyFolder + body.reportName + "/",
+            "studyFolder": this.studyFolder
         }
         fs.writeFileSync(this.studyFolder + '/metadata.json', JSON.stringify(metadata))
         return metadata
