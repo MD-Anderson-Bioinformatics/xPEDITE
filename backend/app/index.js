@@ -350,6 +350,12 @@ async function generateReport(req, res) {
                   if (fs.existsSync(scriptPath)) {
                       log.info("Running post-processing script for report: " + req.body.reportName);
                       const postProc = spawn(scriptPath, [reportFolder]);
+                      postProc.stdout.on('data', (data) => {
+                          fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + data);
+                      });
+                      postProc.stderr.on('data', (data) => {
+                          fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + data);
+                      });
                       postProc.on('close', (exitCode) => {
                           if (exitCode === 0) {
                               log.info("Post-processing completed for report: " + req.body.reportName);
