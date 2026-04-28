@@ -589,9 +589,11 @@ async function search_study(req, res, studyName) {
 
         log.info("study " + study.name + " accessed by " + req.user.user_name)
         let studyDetail = await study.getStudyDetail()
+        const scriptPath = process.env.POST_PROCESS_SCRIPT || '/override/post_process.sh';
         res.render("study", {
           studyDetail: studyDetail,
-          rootPath: rootPath
+          rootPath: rootPath,
+          postProcessingAvailable: fs.existsSync(scriptPath)
         })
     } catch (err) {
         log.error(err)
