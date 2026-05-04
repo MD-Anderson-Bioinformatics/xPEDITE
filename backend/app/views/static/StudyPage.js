@@ -393,14 +393,16 @@ var StudyPage = (function() {
         }
         let message = await response.text();
         showMessage(message);
-        const reportDone = message.includes("Report saved") || message.toLowerCase().includes('error');
+        const reportDone = message.includes("Report saved");
+        const reportFailed = message.toLowerCase().includes('error');
+
         const postProcTerminal = message.includes("Post-processing complete.") ||
             message.includes("Post-processing failed") ||
             message.includes("Post-processing error") ||
             message.includes("Post-processing requested but script not found");
         const allDone = reportDone && (!postProcessingRequested || postProcTerminal);
 
-        if (reportDone && !reportListRefreshed) {
+        if ((reportDone || reportFailed) && !reportListRefreshed) {
             reportListRefreshed = true;
             $("#spinwheel").hide()
             $.ajax({
@@ -416,7 +418,7 @@ var StudyPage = (function() {
                 }
             });
         }
-        if (allDone) {
+        if (allDone || reportFailed) {
             clearInterval(statusCheckTimer);
             const succeeded = message.includes("Report saved") &&
                 (!postProcessingRequested || message.includes("Post-processing complete."));
