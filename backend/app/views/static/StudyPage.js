@@ -396,11 +396,11 @@ var StudyPage = (function() {
         const reportDone = message.includes("Report saved");
         const reportFailed = message.toLowerCase().includes('error');
 
-        const postProcTerminal = message.includes("Post-processing complete.") ||
+        const postProcessingDone = message.includes("Post-processing complete.") ||
             message.includes("Post-processing failed") ||
             message.includes("Post-processing error") ||
             message.includes("Post-processing requested but script not found");
-        const allDone = reportDone && (!postProcessingRequested || postProcTerminal);
+        const allDone = reportDone && (!postProcessingRequested || postProcessingDone);
 
         if ((reportDone || reportFailed) && !reportListRefreshed) {
             reportListRefreshed = true;
