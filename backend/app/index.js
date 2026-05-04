@@ -370,8 +370,8 @@ async function generateReport(req, res) {
                           fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing error: ' + err.message); // String 'Post-processing error' used in StudyPage.js
                       });
                   } else {
-                      log.warn("Post-processing requested but script not found: " + scriptPath); // String 'Post-processing requested but script not found' used in StudyPage.js
-                      fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing requested but script not found: ' + scriptPath);
+                      log.warn("Post-processing requested but script not found: " + scriptPath);
+                      fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing requested but script not found'); // String 'Post-processing requested but script not found' used in StudyPage.js
                   }
               }
           })
