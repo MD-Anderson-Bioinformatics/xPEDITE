@@ -344,7 +344,7 @@ async function generateReport(req, res) {
                   newReport.updateStatus("Generated")
                   log.info(`User ${report.generated_by_user} generated report ${report.reportfile_name} in study ${req.body.studyName}`)
               })
-              fs.appendFileSync(reportFolder + 'logfile.txt', 'Report saved.');
+              fs.appendFileSync(reportFolder + 'logfile.txt', 'Report saved.'); // String 'Report saved' used in StudyPage.js
               if (req.body.run_postprocessing === 'true') {
                   const scriptPath = process.env.POST_PROCESS_SCRIPT || '/override/post_process.sh';
                   if (fs.existsSync(scriptPath)) {
@@ -359,18 +359,18 @@ async function generateReport(req, res) {
                       postProc.on('close', (exitCode) => {
                           if (exitCode === 0) {
                               log.info("Post-processing completed for report: " + req.body.reportName);
-                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.');
+                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.'); // String 'Post-processing complete.' used in StudyPage.js
                           } else {
                               log.error("Post-processing script exited with code " + exitCode + " for report: " + req.body.reportName);
-                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing failed (exit code ' + exitCode + ').');
+                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing failed (exit code ' + exitCode + ').'); // String 'Post-processing failed' used in StudyPage.js
                           }
                       });
                       postProc.on('error', (err) => {
                           log.error("Error running post-processing script: " + err);
-                          fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing error: ' + err.message);
+                          fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing error: ' + err.message); // String 'Post-processing error' used in StudyPage.js
                       });
                   } else {
-                      log.warn("Post-processing requested but script not found: " + scriptPath);
+                      log.warn("Post-processing requested but script not found: " + scriptPath); // String 'Post-processing requested but script not found' used in StudyPage.js
                       fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing requested but script not found: ' + scriptPath);
                   }
               }
