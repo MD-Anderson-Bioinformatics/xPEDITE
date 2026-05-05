@@ -304,7 +304,7 @@ async function generateReport(req, res) {
       // Also, words in the report name must start with an alphanumeric character.
       const reportNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9_\-.]*(?:[ ][a-zA-Z0-9][a-zA-Z0-9_\-.]*)*$/;
       if (!reportNamePattern.test(req.body.reportName)) {
-        throw new Error("Report name fails sanitizaiton regex")
+        throw new Error("Report name fails sanitization regex")
       }
       const reportFolder = path.resolve("/data/" + req.body.studyName + "/" + req.body.reportName) + "/"; // need the trailing slash
       if (!reportFolder.startsWith('/data/')) {
