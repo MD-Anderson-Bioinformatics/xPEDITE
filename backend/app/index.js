@@ -299,10 +299,17 @@ async function getReports(req, res) {
 app.post(rootPath + '/generate_report', authenticate, generateReport)
 
 async function generateReport(req, res) {
-    let reportFolder = "/data/" + req.body.studyName + "/" + req.body.reportName + "/"
-    let report
-    let study
     try {
+      // Same regex as client-side StudyPage.js: allow alphanumeric, underscores, hyphens, periods, and spaces (but cannot start or end with space).
+      // Also, words in the report name must start with an alphanumeric character.
+      const reportNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9_\-.]*(?:[ ][a-zA-Z0-9][a-zA-Z0-9_\-.]*)*$/;
+      if (!reportNamePattern.test(req.body.reportName)) {
+        throw new Error("Report name fails sanitizaiton regex")
+      }
+      const reportFolder = path.resolve("/data/" + req.body.studyName + "/" + req.body.reportName) + "/"; // need the trailing slash
+      if (!reportFolder.startsWith('/data/')) {
+          throw new Error(`Path traversal detected: ${reportFolder}`);
+      }
       log.info("User " + req.user.user_name + " attempting to generate report in: " + reportFolder);
       if (fs.existsSync(reportFolder)) {
         res.status(500).send("Duplicate report name.");
@@ -310,10 +317,10 @@ async function generateReport(req, res) {
       } else {
          fs.mkdirSync(reportFolder)
       }
-      study = new studymodel.StudyOB({
+      let study = new studymodel.StudyOB({
           "name": req.body.studyName
       })
-      report = new reportmodel.ReportOB({
+      let report = new reportmodel.ReportOB({
           "name": req.body.reportName,
           "study_name": req.body.studyName,
           "normalization": req.body.normalization,
