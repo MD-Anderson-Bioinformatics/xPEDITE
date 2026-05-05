@@ -36,6 +36,7 @@ var express = require('express'),
 
 
 const authenticate = require('./shaidy-authenticate').shaidyAuthenticator;
+const scriptPath = process.env.POST_PROCESS_SCRIPT || '/post_process.sh';
 
 const utils = require('./utils')
 const studymodel = require("./study.js")
@@ -353,7 +354,6 @@ async function generateReport(req, res) {
               })
               fs.appendFileSync(reportFolder + 'logfile.txt', 'Report saved.'); // String 'Report saved' used in StudyPage.js
               if (req.body.run_postprocessing === 'true') {
-                  const scriptPath = process.env.POST_PROCESS_SCRIPT || '/post_process.sh';
                   if (fs.existsSync(scriptPath)) {
                       log.info("Running post-processing script for report: " + req.body.reportName);
                       const postProc = spawn(scriptPath, [reportFolder + 'metadata.json']);
@@ -596,7 +596,6 @@ async function search_study(req, res, studyName) {
 
         log.info("study " + study.name + " accessed by " + req.user.user_name)
         let studyDetail = await study.getStudyDetail()
-        const scriptPath = process.env.POST_PROCESS_SCRIPT || '/post_process.sh';
         res.render("study", {
           studyDetail: studyDetail,
           rootPath: rootPath,
