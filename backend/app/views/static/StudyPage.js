@@ -186,7 +186,6 @@ var StudyPage = (function() {
 
     let statusCheckTimer;
     let postProcessingRequested = false;
-    let reportListRefreshed = false;
     function generateReport(reportName) {
         var cols = document.querySelectorAll(".colheader")
         var rows = document.querySelectorAll(".adminrow")
@@ -214,7 +213,6 @@ var StudyPage = (function() {
             run_postprocessing: $('#run_postprocessing').is(':checked')
         }
         postProcessingRequested = data.run_postprocessing;
-        reportListRefreshed = false;
         $("#spinwheel").show()
         $.ajax({
             statusCode: {
@@ -393,19 +391,21 @@ var StudyPage = (function() {
         }
         let message = await response.text();
         showMessage(message);
+
         const reportDone = message.includes("Report saved");
         const reportFailed = message.toLowerCase().includes('error');
 
-        const postProcessingDone = message.includes("Post-processing complete.") ||
-            message.includes("Post-processing failed") ||
-            message.includes("Post-processing error") ||
-            message.includes("Post-processing requested but script not found");
-        const allDone = reportDone && (!postProcessingRequested || postProcessingDone);
+        const postProcessingDone = message.includes("Post-processing complete.");
+        const postProcessingFailed = message.includes("Post-processing failed") ||
+                                     message.includes("Post-processing error") ||
+                                     message.includes("Post-processing requested but script not found");
 
-        if ((reportDone || reportFailed) && !reportListRefreshed) {
-            reportListRefreshed = true;
+        const allDone = reportDone && (!postProcessingRequested || postProcessingDone);
+        const someFailed = reportFailed || postProcessingFailed
+
+        if (allDone || someFailed) {
             $("#spinwheel").hide()
-            $.ajax({
+            $.ajax({ // referesh reports list in dropdown
                 type: "GET",
                 url: rootPath + "/get_reports",
                 data: data,
@@ -417,12 +417,8 @@ var StudyPage = (function() {
                   setButtonsForSelectedReport();
                 }
             });
-        }
-        if (allDone || reportFailed) {
             clearInterval(statusCheckTimer);
-            const succeeded = message.includes("Report saved") &&
-                (!postProcessingRequested || message.includes("Post-processing complete."));
-            if (succeeded) {
+            if (reportDone && postProcessingDone) { // success
                 $("#runStatus").hide() // only hide status if fully successful
                 $("#status").text("") // clear so text doesn't flash on screen when next report is started
             }
