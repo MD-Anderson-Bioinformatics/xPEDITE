@@ -356,20 +356,28 @@ async function generateReport(req, res) {
               if (req.body.run_postprocessing === 'true') {
                   if (fs.existsSync(scriptPath)) {
                       log.info("Running post-processing script for report: " + req.body.reportName);
-                      const postProc = spawn(scriptPath, [reportFolder + 'metadata.json']);
+                      fs.appendFileSync(reportFolder + 'logfile.txt', '\nRunning post-processing script.');
+                      const postProc = spawn(scriptPath, [reportFolder + 'metadata.json'], {
+                          timeout: parseInt(process.env.POST_PROCESS_TIMEOUT, 10) || 5000,
+                          killSignal: 'SIGKILL'
+                      });
                       postProc.stdout.on('data', (data) => {
-                          fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + data);
+                          fs.appendFileSync(reportFolder + 'stdout.log', '\nPost-processing stdout: ' + data);
                       });
                       postProc.stderr.on('data', (data) => {
-                          fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + data);
+                          fs.appendFileSync(reportFolder + 'stderr.log', '\nPost-processing stderr: ' + data);
                       });
-                      postProc.on('close', (exitCode) => {
+                      postProc.on('close', (exitCode, signal) => {
                           if (exitCode === 0) {
                               log.info("Post-processing completed for report: " + req.body.reportName);
                               fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.'); // String 'Post-processing complete.' used in StudyPage.js
                           } else {
+                              if (signal === 'SIGKILL') {
+                                  fs.appendFileSync(reportFolder + 'logfile.txt', '\nError: Post-processing terminated due to timeout.');
+                                  fs.appendFileSync(reportFolder + 'stderr.log', '\nPost-processing terminated due to timeout.');
+                              }
                               log.error("Post-processing script exited with code " + exitCode + " for report: " + req.body.reportName);
-                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing failed (exit code ' + exitCode + ').'); // String 'Post-processing failed' used in StudyPage.js
+                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nError: Post-processing failed (exit code ' + exitCode + ').'); // String 'Post-processing failed' used in StudyPage.js
                           }
                       });
                       postProc.on('error', (err) => {

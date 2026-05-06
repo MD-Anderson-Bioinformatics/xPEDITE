@@ -87,8 +87,10 @@ services:
       REPORT_TITLE: ${REPORT_TITLE:-Metabolomics Data Analysis}
       REPORT_AUTHOR: ${REPORT_AUTHOR:-Metabolomics Facility}
       REPORT_INSTITUTION: ${REPORT_INSTITUTION:-My Institution}
-      # Optional: path inside the container to the post-processing script (default: /post_process.sh)
+      # Optional: path inside the container to the post-processing script
       #POST_PROCESS_SCRIPT: ${POST_PROCESS_SCRIPT:-/post_process.sh}
+      # Optional: timeout for optional the post-processing script
+      #POST_PROCESS_TIMEOUT: ${POST_PROCESS_TIMEOUT:-5000}
     depends_on:
       - mongo
       - pathways
