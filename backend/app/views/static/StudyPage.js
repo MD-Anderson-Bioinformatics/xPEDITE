@@ -395,12 +395,12 @@ var StudyPage = (function() {
         const reportDone = message.includes("Report saved");
         const reportFailed = message.toLowerCase().includes('error');
 
-        const postProcessingDone = message.includes("Post-processing complete.");
+        const postProcessingDone = message.includes("Post-processing complete.") || !postProcessingRequested;
         const postProcessingFailed = message.includes("Post-processing failed") ||
                                      message.includes("Post-processing error") ||
                                      message.includes("Post-processing requested but script not found");
 
-        const allDone = reportDone && (!postProcessingRequested || postProcessingDone);
+        const allDone = reportDone && postProcessingDone;
         const someFailed = reportFailed || postProcessingFailed
 
         if (allDone || someFailed) {
