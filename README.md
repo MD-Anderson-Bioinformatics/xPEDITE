@@ -118,14 +118,15 @@ and displayed in the status area of the report generation page.
 
    ```yaml
    volumes:
-     - /path/to/post_process.sh:/post_process.sh:ro
+      - ${POST_PROCESS_SCRIPT_HOST:-/path/to/post_process.sh}:${POST_PROCESS_SCRIPT:-/post_process.sh}:ro
    ```
 
-3. Set the environment variable (optional — only needed if using a path other than `/post_process.sh`):
+3. Set the environment variables:
 
    ```yaml
    environment:
-     POST_PROCESS_SCRIPT: /post_process.sh
+     POST_PROCESS_SCRIPT: ${POST_PROCESS_SCRIPT:-/post_process.sh}
+     POST_PROCESS_TIMEOUT: ${POST_PROCESS_TIMEOUT:-5000}
    ```
 
 If the script is not present at the configured path, the checkbox will not appear and no post-processing will run.
