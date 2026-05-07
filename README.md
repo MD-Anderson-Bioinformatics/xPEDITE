@@ -101,7 +101,7 @@ When a post-processing script is configured and present in the container, a
 the report generation page. If checked, the script is executed after the report is saved.
 
 The script receives the path to the report's `metadata.json` file as its first
-argument. This file contains fields including `studyName`, `reportName`,
+argument. This file contains fields including `studyNumber`, `reportName`,
 `submitterEmail`, `pdataPath`, `analyzedDataPath`, `reportFolder`, and `studyFolder`.
 
 Progress and any output from the script are written to the report's `logfile.txt`
