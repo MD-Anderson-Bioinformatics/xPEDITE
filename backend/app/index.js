@@ -357,8 +357,10 @@ async function generateReport(req, res) {
                   if (fs.existsSync(scriptPath)) {
                       log.info("Running post-processing script for report: " + req.body.reportName);
                       fs.appendFileSync(reportFolder + 'logfile.txt', '\nRunning post-processing script.');
+                      const parsedTimeout = parseInt(process.env.POST_PROCESS_TIMEOUT, 10);
+                      const timeout = Number.isFinite(parsedTimeout) && parsedTimeout > 0 ? parsedTimeout : 60000;
                       const postProc = spawn(scriptPath, [reportFolder + 'metadata.json'], {
-                          timeout: parseInt(process.env.POST_PROCESS_TIMEOUT, 10) || 5000,
+                          timeout: timeout,
                           killSignal: 'SIGKILL'
                       });
                       postProc.stdout.on('data', (data) => {
