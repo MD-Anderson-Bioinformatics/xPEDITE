@@ -301,11 +301,15 @@ app.post(rootPath + '/generate_report', authenticate, generateReport)
 
 async function generateReport(req, res) {
     try {
-      // Same regex as client-side StudyPage.js: allow alphanumeric, underscores, hyphens, periods, and spaces (but cannot start or end with space).
+      // Same regex as client-side StudyPage.js for report name:
+      // Allow alphanumeric, underscores, hyphens, periods, and spaces (but cannot start or end with space).
       // Also, words in the report name must start with an alphanumeric character.
-      const reportNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9_\-.]*(?:[ ][a-zA-Z0-9][a-zA-Z0-9_\-.]*)*$/;
-      if (!reportNamePattern.test(req.body.reportName)) {
+      const okNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9_\-.]*(?:[ ][a-zA-Z0-9][a-zA-Z0-9_\-.]*)*$/;
+      if (!okNamePattern.test(req.body.reportName)) {
         throw new Error("Report name fails sanitization regex")
+      }
+      if (!okNamePattern.test(req.body.studyName)) {
+        throw new Error("Study name fails sanitization regex")
       }
       const reportFolder = path.resolve("/data/" + req.body.studyName + "/" + req.body.reportName) + "/"; // need the trailing slash
       if (!reportFolder.startsWith('/data/')) {
