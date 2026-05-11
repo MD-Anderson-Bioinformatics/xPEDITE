@@ -35,8 +35,6 @@ opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 render_report = function(opt) {
   params_list=fromJSON(file=file.path(opt$reportFolder,"metadata.json"))
-  params_list[["reportFolder"]] = paste(opt$reportFolder,"/",sep='')
-  params_list[["normalization"]] = opt$normalization
   rmarkdown::render(
     opt$file, params = params_list,
     output_file = file.path(opt$reportFolder,opt$out),

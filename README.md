@@ -83,10 +83,53 @@ For a given study, click the 'Select' button to go to that study's page.
 On that study's page, click the check box to upload an analyzed data file. Examples are provided in the
 test\_data directory.
 
-### 5. Generate Report
+### 6. Generate Report
 
 On that same study's page, select appropriate options from the rest of the dropdowns and click
 the 'Generate Report' button.
+
+## Optional Post-Processing Step
+
+xPEDITE supports an optional custom post-processing script that runs automatically
+after a report is generated. This is useful for tasks such as sending notification
+emails, copying reports to an external location, or triggering downstream pipelines.
+
+### How it works
+
+When a post-processing script is configured and present in the container, a
+**Run custom post-processing step after report generation** checkbox will appear on
+the report generation page. If checked, the script is executed after the report is saved.
+
+The script receives the path to the report's `metadata.json` file as its first
+argument. This file contains fields including `studyNumber`, `reportName`,
+`submitterEmail`, `pdataPath`, `analyzedDataPath`, `reportFolder`, and `studyFolder`.
+
+Progress and any output from the script are written to the report's `logfile.txt`
+and displayed in the status area of the report generation page.
+
+### Configuration
+
+1. **Write a post-processing script.** The script must be executable and accept
+   the path to `metadata.json` as its first argument. Exit code `0` is treated as
+   success; any other exit code is treated as failure.
+
+2. **Mount the script into the container.** In `docker-compose.yml`, uncomment and
+   update the optional volume line under the `backend` service:
+
+   ```yaml
+   volumes:
+      - ${POST_PROCESS_SCRIPT_HOST:-/path/to/post_process.sh}:${POST_PROCESS_SCRIPT:-/post_process.sh}:ro
+   ```
+
+3. Set the environment variables:
+
+   ```yaml
+   environment:
+     POST_PROCESS_SCRIPT: ${POST_PROCESS_SCRIPT:-/post_process.sh}
+     POST_PROCESS_TIMEOUT: ${POST_PROCESS_TIMEOUT:-5000}
+   ```
+
+If the script is not present at the configured path, the checkbox will not appear and no post-processing will run.
 
 ## Copyright and License information
 
