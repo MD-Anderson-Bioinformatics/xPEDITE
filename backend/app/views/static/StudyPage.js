@@ -235,6 +235,12 @@ var StudyPage = (function() {
                         await checkStatus(reportName)
                     }, 2000); // Then set up interval for subsequent checks
                 },
+                400: function(data) {
+                    clearInterval(statusCheckTimer);
+                    $("#runStatus").hide()
+                    $("#spinwheel").hide()
+                    alert("Report generation error. Please try a different name or contact support.");
+                },
                 401: function() {
                     clearInterval(statusCheckTimer);
                     window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/login"

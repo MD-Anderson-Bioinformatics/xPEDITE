@@ -306,10 +306,10 @@ async function generateReport(req, res) {
       // Also, words in the report name must start with an alphanumeric character.
       const okNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9_\-.]*(?:[ ][a-zA-Z0-9][a-zA-Z0-9_\-.]*)*$/;
       if (!okNamePattern.test(req.body.reportName)) {
-        throw new Error("Report name fails sanitization regex")
+        throw new TypeError("Report name fails sanitization regex")
       }
       if (!okNamePattern.test(req.body.studyName)) {
-        throw new Error("Study name fails sanitization regex")
+        throw new TypeError("Study name fails sanitization regex")
       }
       const reportFolder = path.resolve("/data/" + req.body.studyName + "/" + req.body.reportName) + "/"; // need the trailing slash
       if (!reportFolder.startsWith('/data/')) {
@@ -408,6 +408,9 @@ async function generateReport(req, res) {
       log.error(err);
       if (err.code === 'EEXIST') { // e.g. trying to create a report named 'pdata.csv'
         res.status(500).send("Invalid report name.");
+        return;
+      } else if (err instanceof TypeError) {
+        res.status(400).send("Invalid input data.");
         return;
       }
       res.status(500).send("Unspecified error")
