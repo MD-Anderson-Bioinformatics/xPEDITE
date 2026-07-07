@@ -487,6 +487,9 @@ var StudyPage = (function() {
             statusCode: {
                 401: function() {
                     window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/login"
+                },
+                413: function() {
+                    alert("The file you are trying to upload is too large. Maximum allowed size is 5MB.");
                 }
             },
             cache: false,

@@ -122,6 +122,14 @@ If not, see <https://www.gnu.org/licenses/>.
                      }
                  }
              },
+             sampleFile: {
+                 validators: {
+                     file: {
+                         maxSize: 5 * 1024 * 1024,
+                         message: 'The uploaded file exceeds the maximum allowed size of 5MB.'
+                     }
+                 }
+             },
          }
      });
 
