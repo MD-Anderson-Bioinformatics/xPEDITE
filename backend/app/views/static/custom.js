@@ -126,7 +126,7 @@ If not, see <https://www.gnu.org/licenses/>.
                  validators: {
                      file: {
                          maxSize: 5 * 1024 * 1024,
-                         message: 'The uploaded file exceeds the maximum allowed size of 5MB.'
+                         message: 'The file exceeds the maximum allowed size of 5MB.'
                      }
                  }
              },
