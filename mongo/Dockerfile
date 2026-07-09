@@ -18,7 +18,7 @@
 ## Followed mongodb installation instructions
 ## https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-debian/
 ##
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 ENV MONGO_MAJOR 7.0
 
@@ -27,7 +27,7 @@ RUN apt-get update && \
     curl -fsSL https://pgp.mongodb.com/server-${MONGO_MAJOR}.asc | \
     gpg -o /usr/share/keyrings/mongodb-server-${MONGO_MAJOR}.gpg \
     --dearmor && \
-    echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-${MONGO_MAJOR}.gpg ] http://repo.mongodb.org/apt/debian bullseye/mongodb-org/${MONGO_MAJOR} main" | \
+    echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-${MONGO_MAJOR}.gpg ] http://repo.mongodb.org/apt/debian bookworm/mongodb-org/${MONGO_MAJOR} main" | \
         tee /etc/apt/sources.list.d/mongodb-org-${MONGO_MAJOR}.list && \
     apt-get update && \
     apt-get install -y mongodb-org && \
