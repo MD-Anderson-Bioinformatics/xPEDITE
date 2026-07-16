@@ -22,6 +22,7 @@ const fs = require('fs');
 const archiver = require('archiver');
 
 const util = require('util');
+const { spawn } = require('child_process');
 const exec = util.promisify(require('child_process').exec);
 const fileUpload = require('express-fileupload');
 const schema = require("./schema")
@@ -35,6 +36,7 @@ var express = require('express'),
 
 
 const authenticate = require('./shaidy-authenticate').shaidyAuthenticator;
+const scriptPath = process.env.POST_PROCESS_SCRIPT || '/post_process.sh';
 
 const utils = require('./utils')
 const studymodel = require("./study.js")
@@ -298,10 +300,21 @@ async function getReports(req, res) {
 app.post(rootPath + '/generate_report', authenticate, generateReport)
 
 async function generateReport(req, res) {
-    let reportFolder = "/data/" + req.body.studyName + "/" + req.body.reportName + "/"
-    let report
-    let study
     try {
+      // Same regex as client-side StudyPage.js for report name:
+      // Allow alphanumeric, underscores, hyphens, periods, and spaces (but cannot start or end with space).
+      // Also, words in the report name must start with an alphanumeric character.
+      const okNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9_\-.]*(?:[ ][a-zA-Z0-9][a-zA-Z0-9_\-.]*)*$/;
+      if (!okNamePattern.test(req.body.reportName)) {
+        throw new TypeError("Report name fails sanitization regex")
+      }
+      if (!okNamePattern.test(req.body.studyName)) {
+        throw new TypeError("Study name fails sanitization regex")
+      }
+      const reportFolder = path.resolve("/data/" + req.body.studyName + "/" + req.body.reportName) + "/"; // need the trailing slash
+      if (!reportFolder.startsWith('/data/')) {
+          throw new Error(`Path traversal detected: ${reportFolder}`);
+      }
       log.info("User " + req.user.user_name + " attempting to generate report in: " + reportFolder);
       if (fs.existsSync(reportFolder)) {
         res.status(500).send("Duplicate report name.");
@@ -309,10 +322,10 @@ async function generateReport(req, res) {
       } else {
          fs.mkdirSync(reportFolder)
       }
-      study = new studymodel.StudyOB({
+      let study = new studymodel.StudyOB({
           "name": req.body.studyName
       })
-      report = new reportmodel.ReportOB({
+      let report = new reportmodel.ReportOB({
           "name": req.body.reportName,
           "study_name": req.body.studyName,
           "normalization": req.body.normalization,
@@ -343,7 +356,47 @@ async function generateReport(req, res) {
                   newReport.updateStatus("Generated")
                   log.info(`User ${report.generated_by_user} generated report ${report.reportfile_name} in study ${req.body.studyName}`)
               })
-              fs.appendFileSync(reportFolder + 'logfile.txt', 'Report saved.');
+              fs.appendFileSync(reportFolder + 'logfile.txt', 'Report saved.'); // String 'Report saved' used in StudyPage.js
+              if (req.body.run_postprocessing === 'true') {
+                  if (fs.existsSync(scriptPath)) {
+                      log.info("Running post-processing script for report: " + req.body.reportName);
+                      fs.appendFileSync(reportFolder + 'logfile.txt', '\nRunning post-processing script.');
+                      const parsedTimeout = parseInt(process.env.POST_PROCESS_TIMEOUT, 10);
+                      const timeout = Number.isFinite(parsedTimeout) && parsedTimeout > 0 ? parsedTimeout : 60000;
+                      const postProc = spawn(scriptPath, [reportFolder + 'metadata.json'], {
+                          timeout: timeout,
+                          killSignal: 'SIGKILL'
+                      });
+                      postProc.stdout.on('data', (data) => {
+                          fs.appendFileSync(reportFolder + 'stdout.log', '\nPost-processing stdout: ' + data);
+                      });
+                      postProc.stderr.on('data', (data) => {
+                          fs.appendFileSync(reportFolder + 'stderr.log', '\nPost-processing stderr: ' + data);
+                      });
+                      postProc.on('close', (exitCode, signal) => {
+                          if (exitCode === 0) {
+                              log.info("Post-processing completed for report: " + req.body.reportName);
+                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.'); // String 'Post-processing complete.' used in StudyPage.js
+                          } else {
+                              if (signal === 'SIGKILL') {
+                                  fs.appendFileSync(reportFolder + 'logfile.txt', '\nError: Post-processing terminated due to timeout.');
+                                  fs.appendFileSync(reportFolder + 'stderr.log', '\nPost-processing terminated due to timeout.');
+                              }
+                              log.error("Post-processing script exited with code " + exitCode + " for report: " + req.body.reportName);
+                              fs.appendFileSync(reportFolder + 'logfile.txt',
+                                          '\nError: Post-processing failed (exit code ' + exitCode + '). See log files for more information.'
+                              ); // String 'Post-processing failed' used in StudyPage.js
+                          }
+                      });
+                      postProc.on('error', (err) => {
+                          log.error("Error running post-processing script: " + err);
+                          fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing error: ' + err.message); // String 'Post-processing error' used in StudyPage.js
+                      });
+                  } else {
+                      log.warn("Post-processing requested but script not found: " + scriptPath);
+                      fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing requested but script not found'); // String 'Post-processing requested but script not found' used in StudyPage.js
+                  }
+              }
           })
           .catch((err) => {
               log.error("Error generating report '" + req.body.reportName + "'");
@@ -355,6 +408,9 @@ async function generateReport(req, res) {
       log.error(err);
       if (err.code === 'EEXIST') { // e.g. trying to create a report named 'pdata.csv'
         res.status(500).send("Invalid report name.");
+        return;
+      } else if (err instanceof TypeError) {
+        res.status(400).send("Invalid input data.");
         return;
       }
       res.status(500).send("Unspecified error")
@@ -561,7 +617,8 @@ async function search_study(req, res, studyName) {
         let studyDetail = await study.getStudyDetail()
         res.render("study", {
           studyDetail: studyDetail,
-          rootPath: rootPath
+          rootPath: rootPath,
+          postProcessingAvailable: fs.existsSync(scriptPath)
         })
     } catch (err) {
         log.error(err)

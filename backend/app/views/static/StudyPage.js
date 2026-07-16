@@ -185,6 +185,7 @@ var StudyPage = (function() {
 
 
     let statusCheckTimer;
+    let postProcessingRequested = false;
     function generateReport(reportName) {
         var cols = document.querySelectorAll(".colheader")
         var rows = document.querySelectorAll(".adminrow")
@@ -208,8 +209,10 @@ var StudyPage = (function() {
             samples: JSON.stringify(samples),
             assay_type: $('#assay_type').val(),
             tool_used: $('#tool_used').val(),
-            datafile: $('#uploaded_files').val()
+            datafile: $('#uploaded_files').val(),
+            run_postprocessing: $('#run_postprocessing').is(':checked')
         }
+        postProcessingRequested = data.run_postprocessing;
         $("#spinwheel").show()
         $.ajax({
             statusCode: {
@@ -231,6 +234,12 @@ var StudyPage = (function() {
                     statusCheckTimer = setInterval(async () => {
                         await checkStatus(reportName)
                     }, 2000); // Then set up interval for subsequent checks
+                },
+                400: function(data) {
+                    clearInterval(statusCheckTimer);
+                    $("#runStatus").hide()
+                    $("#spinwheel").hide()
+                    alert("Report generation error. Please try a different name or contact support.");
                 },
                 401: function() {
                     clearInterval(statusCheckTimer);
@@ -388,14 +397,21 @@ var StudyPage = (function() {
         }
         let message = await response.text();
         showMessage(message);
-        if (message.includes("Report saved") || message.toLowerCase().includes('error')) { // report generated or failed
-            clearInterval(statusCheckTimer);
+
+        const reportDone = message.includes("Report saved");
+        const reportFailed = message.toLowerCase().includes('error');
+
+        const postProcessingDone = message.includes("Post-processing complete.") || !postProcessingRequested;
+        const postProcessingFailed = message.includes("Post-processing failed") ||
+                                     message.includes("Post-processing error") ||
+                                     message.includes("Post-processing requested but script not found");
+
+        const allDone = reportDone && postProcessingDone;
+        const someFailed = reportFailed || postProcessingFailed
+
+        if (allDone || someFailed) {
             $("#spinwheel").hide()
-            if (message.includes("Report saved")) {
-                $("#runStatus").hide() // only hide status if success
-                $("#status").text("") // clear so text doesn't flash on screen when next report is started
-            }
-            $.ajax({
+            $.ajax({ // referesh reports list in dropdown
                 type: "GET",
                 url: rootPath + "/get_reports",
                 data: data,
@@ -407,6 +423,11 @@ var StudyPage = (function() {
                   setButtonsForSelectedReport();
                 }
             });
+            clearInterval(statusCheckTimer);
+            if (reportDone && postProcessingDone) { // success
+                $("#runStatus").hide() // only hide status if fully successful
+                $("#status").text("") // clear so text doesn't flash on screen when next report is started
+            }
         }
     }
 

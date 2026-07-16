@@ -64,6 +64,8 @@ services:
       - xpedite-logs:/logs
       - xpedite-reports:/reports
       - xpedite-pathways:/pathways:ro
+      # Optional: mount post-processing script
+      #- ${POST_PROCESS_SCRIPT_HOST:-/path/to/post_process.sh}:${POST_PROCESS_SCRIPT:-/post_process.sh}:ro
     environment:
       # For LDAP-JWT authentication. IP address and port for LDAP-JWT instance
       LDAP_JWT_HOST: ${LDAP_JWT_HOST}
@@ -85,6 +87,10 @@ services:
       REPORT_TITLE: ${REPORT_TITLE:-Metabolomics Data Analysis}
       REPORT_AUTHOR: ${REPORT_AUTHOR:-Metabolomics Facility}
       REPORT_INSTITUTION: ${REPORT_INSTITUTION:-My Institution}
+      # Optional: path inside the container to the post-processing script
+      #POST_PROCESS_SCRIPT: ${POST_PROCESS_SCRIPT:-/post_process.sh}
+      # Optional: timeout (ms) for post-processing script
+      #POST_PROCESS_TIMEOUT: ${POST_PROCESS_TIMEOUT:-60000}
     depends_on:
       - mongo
       - pathways

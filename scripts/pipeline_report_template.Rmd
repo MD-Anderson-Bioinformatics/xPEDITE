@@ -26,6 +26,11 @@ params:
   MBATCHVERSION:
   MBATCHUTILSVERSION:
   TEMPLATEVERSION: v1
+  reportName:
+  submitterEmail:
+  pdataPath:
+  analyzedDataPath:
+  studyFolder:
 plot: NA
 ---
 
