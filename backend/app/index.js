@@ -368,6 +368,7 @@ async function generateReport(req, res) {
                           killSignal: 'SIGKILL'
                       });
                       let stderrBuffer = '';
+                      let postProcTerminalState = null;
                       postProc.stdout.on('data', (data) => {
                           fs.appendFileSync(reportFolder + 'stdout.log', '\nPost-processing stdout: ' + data);
                       });
@@ -376,6 +377,14 @@ async function generateReport(req, res) {
                           stderrBuffer += data.toString();
                       });
                       postProc.on('close', (exitCode, signal) => {
+                          if (postProcTerminalState === 'spawn-error') {
+                              return;
+                          }
+                          if (postProcTerminalState !== null) {
+                              log.warn("Ignoring duplicate post-processing close event for report: " + req.body.reportName);
+                              return;
+                          }
+                          postProcTerminalState = 'closed';
                           if (exitCode === 0) {
                               log.info("Post-processing completed for report: " + req.body.reportName);
                               fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.'); // String 'Post-processing complete.' used in StudyPage.js
@@ -398,6 +407,10 @@ async function generateReport(req, res) {
                           }
                       });
                       postProc.on('error', (err) => {
+                          if (postProcTerminalState !== null) {
+                              return;
+                          }
+                          postProcTerminalState = 'spawn-error';
                           log.error("Error running post-processing script: " + err);
                           fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing error: ' + err.message); // String 'Post-processing error' used in StudyPage.js
                       });
