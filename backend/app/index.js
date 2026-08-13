@@ -383,7 +383,6 @@ async function generateReport(req, res) {
                               let failureMessage = '';
                               if (signal === 'SIGKILL') {
                                   failureMessage = 'Error: Post-processing failed due to timeout.';
-                                  fs.appendFileSync(reportFolder + 'logfile.txt', '\nError: Post-processing terminated due to timeout.');
                                   fs.appendFileSync(reportFolder + 'stderr.log', '\nPost-processing terminated due to timeout.');
                               } else if (signal) {
                                   failureMessage = 'Error: Post-processing failed (terminated by signal ' + signal + ').';
