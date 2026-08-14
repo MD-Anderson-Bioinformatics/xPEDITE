@@ -367,14 +367,14 @@ async function generateReport(req, res) {
                           timeout: timeout,
                           killSignal: 'SIGKILL'
                       });
-                      let stderrBuffer = '';
                       let handled = false;
                       postProc.stdout.on('data', (data) => {
                           fs.appendFileSync(reportFolder + 'stdout.log', '\nPost-processing stdout: ' + data);
                       });
+                      const stderrCollector = createStderrCollector();
                       postProc.stderr.on('data', (data) => {
                           fs.appendFileSync(reportFolder + 'stderr.log', '\nPost-processing stderr: ' + data);
-                          stderrBuffer += data.toString();
+                          stderrCollector.write(data.toString());
                       });
                       postProc.on('close', (exitCode, signal) => {
                           if (handled) return;
@@ -387,10 +387,10 @@ async function generateReport(req, res) {
                           }
 
                           log.error("Post-processing script failed for report " + req.body.reportName + ". Exit code: " + exitCode + ", signal: " + signal);
-
+                          stderrCollector.end(); // flush any trailing partial lines
                           const message = signal
                               ? 'Error: Post-processing failed due to timeout.'
-                              : 'Error: Post-processing failed (exit code ' + exitCode + ').\n' + getPostProcessingUserMessage(stderrBuffer);
+                              : 'Error: Post-processing failed (exit code ' + exitCode + ').\n' + stderrCollector.getMessage();
 
                           fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + message);
                       });
@@ -432,25 +432,53 @@ function stripAnsiEscapeCodes(text) {
         .replace(/\x1B\][^\x07\x1B]*(\x07|\x1B\\)/g, ''); // OSC sequences
 }
 
-function getPostProcessingUserMessage(stderrBuffer) {
-    const sanitizedLines = stripAnsiEscapeCodes(stderrBuffer)
-        .replace(/\r/g, '\n')
-        .split('\n')
-        .map((line) => line.replace(/\u0000/g, '').trim())
-        .filter(Boolean);
+const MAX_ERROR_LINES = 50;
+const TAIL_LINES = 5;
+const MAX_LINE_LENGTH = 500; // defends against one giant line with no newlines
 
-    if (sanitizedLines.length === 0) {
-        return '';
-    }
-    const errorLines = sanitizedLines.filter((line) => /error:/i.test(line));
-    const selectedLines = errorLines.length > 0 ? errorLines : sanitizedLines.slice(-5);
-    const message = selectedLines.join('\n');
-    const maxLength = 2000;
+/* For collecting post-processing stderr to report error message in UI */
+function createStderrCollector() {
+    let leftover = '';
+    const errorLines = [];
+    const tailLines = [];
 
-    if (message.length > maxLength) {
-        return message.slice(0, maxLength) + '...';
+    function addLine(rawLine) {
+        const line = stripAnsiEscapeCodes(rawLine)
+            .replace(/\u0000/g, '')
+            .trim()
+            .slice(0, MAX_LINE_LENGTH);
+        if (!line) return;
+
+        if (/error:/i.test(line) && errorLines.length < MAX_ERROR_LINES) {
+            errorLines.push(line);
+        }
+
+        tailLines.push(line);
+        if (tailLines.length > TAIL_LINES) {
+            tailLines.shift();
+        }
     }
-    return message;
+
+    return {
+        write(chunk) {
+            const text = (leftover + chunk).replace(/\r/g, '\n');
+            const lines = text.split('\n');
+            leftover = lines.pop(); // last piece may be an incomplete line
+            lines.forEach(addLine);
+        },
+        end() {
+            if (leftover) {
+                addLine(leftover);
+                leftover = '';
+            }
+        },
+        getMessage() {
+            const selectedLines = errorLines.length > 0 ? errorLines : tailLines;
+            const message = selectedLines.join('\n');
+            const maxLength = 2000;
+            return message.length > maxLength ? message.slice(0, maxLength) + '...' : message;
+        }
+    };
 }
 
 /*
