@@ -363,9 +363,10 @@ async function generateReport(req, res) {
                       fs.appendFileSync(reportFolder + 'logfile.txt', '\nRunning post-processing script.');
                       const parsedTimeout = parseInt(process.env.POST_PROCESS_TIMEOUT, 10);
                       const timeout = Number.isFinite(parsedTimeout) && parsedTimeout > 0 ? parsedTimeout : 60000;
+                      const killSignal = 'SIGKILL';
                       const postProc = spawn(scriptPath, [reportFolder + 'metadata.json'], {
                           timeout: timeout,
-                          killSignal: 'SIGKILL'
+                          killSignal: killSignal
                       });
                       let handled = false;
                       postProc.stdout.on('data', (data) => {
@@ -388,7 +389,7 @@ async function generateReport(req, res) {
 
                           log.error("Post-processing script failed for report " + req.body.reportName + ". Exit code: " + exitCode + ", signal: " + signal);
                           stderrCollector.end(); // flush any trailing partial lines
-                          const message = signal
+                          const message = signal === killSignal
                               ? 'Error: Post-processing failed due to timeout.'
                               : 'Error: Post-processing failed (exit code ' + exitCode + ').\n' + stderrCollector.getMessage();
 
@@ -463,7 +464,9 @@ function createStderrCollector() {
         write(chunk) {
             const text = (leftover + chunk).replace(/\r/g, '\n');
             const lines = text.split('\n');
-            leftover = lines.pop(); // last piece may be an incomplete line
+            // Cap leftover so a chunk with no newline can't grow it unbounded; addLine() would
+            // truncate to this length anyway once the line is eventually flushed.
+            leftover = lines.pop().slice(0, MAX_LINE_LENGTH);
             lines.forEach(addLine);
         },
         end() {
