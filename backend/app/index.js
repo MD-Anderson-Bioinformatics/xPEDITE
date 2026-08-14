@@ -363,32 +363,41 @@ async function generateReport(req, res) {
                       fs.appendFileSync(reportFolder + 'logfile.txt', '\nRunning post-processing script.');
                       const parsedTimeout = parseInt(process.env.POST_PROCESS_TIMEOUT, 10);
                       const timeout = Number.isFinite(parsedTimeout) && parsedTimeout > 0 ? parsedTimeout : 60000;
+                      const killSignal = 'SIGKILL';
                       const postProc = spawn(scriptPath, [reportFolder + 'metadata.json'], {
                           timeout: timeout,
-                          killSignal: 'SIGKILL'
+                          killSignal: killSignal
                       });
+                      let handled = false;
                       postProc.stdout.on('data', (data) => {
                           fs.appendFileSync(reportFolder + 'stdout.log', '\nPost-processing stdout: ' + data);
                       });
+                      const stderrCollector = createStderrCollector();
                       postProc.stderr.on('data', (data) => {
                           fs.appendFileSync(reportFolder + 'stderr.log', '\nPost-processing stderr: ' + data);
+                          stderrCollector.write(data.toString());
                       });
                       postProc.on('close', (exitCode, signal) => {
+                          if (handled) return;
+                          handled = true;
+
                           if (exitCode === 0) {
                               log.info("Post-processing completed for report: " + req.body.reportName);
-                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.'); // String 'Post-processing complete.' used in StudyPage.js
-                          } else {
-                              if (signal === 'SIGKILL') {
-                                  fs.appendFileSync(reportFolder + 'logfile.txt', '\nError: Post-processing terminated due to timeout.');
-                                  fs.appendFileSync(reportFolder + 'stderr.log', '\nPost-processing terminated due to timeout.');
-                              }
-                              log.error("Post-processing script exited with code " + exitCode + " for report: " + req.body.reportName);
-                              fs.appendFileSync(reportFolder + 'logfile.txt',
-                                          '\nError: Post-processing failed (exit code ' + exitCode + '). See log files for more information.'
-                              ); // String 'Post-processing failed' used in StudyPage.js
+                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.');
+                              return;
                           }
+
+                          log.error("Post-processing script failed for report " + req.body.reportName + ". Exit code: " + exitCode + ", signal: " + signal);
+                          stderrCollector.end(); // flush any trailing partial lines
+                          const message = signal === killSignal
+                              ? 'Error: Post-processing failed due to timeout.'
+                              : 'Error: Post-processing failed (exit code ' + exitCode + ').\n' + stderrCollector.getMessage();
+
+                          fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + message);
                       });
                       postProc.on('error', (err) => {
+                          if (handled) return;
+                          handled = true;
                           log.error("Error running post-processing script: " + err);
                           fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing error: ' + err.message); // String 'Post-processing error' used in StudyPage.js
                       });
@@ -416,6 +425,63 @@ async function generateReport(req, res) {
       res.status(500).send("Unspecified error")
       return;
     }
+}
+
+function stripAnsiEscapeCodes(text) {
+    return text
+        .replace(/\x1B\[[0-9;]*[A-Za-z]/g, '')       // CSI sequences
+        .replace(/\x1B\][^\x07\x1B]*(\x07|\x1B\\)/g, ''); // OSC sequences
+}
+
+const MAX_ERROR_LINES = 50;
+const TAIL_LINES = 5;
+const MAX_LINE_LENGTH = 500; // defends against one giant line with no newlines
+
+/* For collecting post-processing stderr to report error message in UI */
+function createStderrCollector() {
+    let leftover = '';
+    const errorLines = [];
+    const tailLines = [];
+
+    function addLine(rawLine) {
+        const line = stripAnsiEscapeCodes(rawLine)
+            .replace(/\u0000/g, '')
+            .trim()
+            .slice(0, MAX_LINE_LENGTH);
+        if (!line) return;
+
+        if (/error:/i.test(line) && errorLines.length < MAX_ERROR_LINES) {
+            errorLines.push(line);
+        }
+
+        tailLines.push(line);
+        if (tailLines.length > TAIL_LINES) {
+            tailLines.shift();
+        }
+    }
+
+    return {
+        write(chunk) {
+            const text = (leftover + chunk).replace(/\r/g, '\n');
+            const lines = text.split('\n');
+            // Cap leftover so a chunk with no newline can't grow it unbounded; addLine() would
+            // truncate to this length anyway once the line is eventually flushed.
+            leftover = lines.pop().slice(0, MAX_LINE_LENGTH);
+            lines.forEach(addLine);
+        },
+        end() {
+            if (leftover) {
+                addLine(leftover);
+                leftover = '';
+            }
+        },
+        getMessage() {
+            const selectedLines = errorLines.length > 0 ? errorLines : tailLines;
+            const message = selectedLines.join('\n');
+            const maxLength = 2000;
+            return message.length > maxLength ? message.slice(0, maxLength) + '...' : message;
+        }
+    };
 }
 
 /*
