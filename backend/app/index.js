@@ -368,7 +368,7 @@ async function generateReport(req, res) {
                           killSignal: 'SIGKILL'
                       });
                       let stderrBuffer = '';
-                      let postProcTerminalState = null;
+                      let handled = false;
                       postProc.stdout.on('data', (data) => {
                           fs.appendFileSync(reportFolder + 'stdout.log', '\nPost-processing stdout: ' + data);
                       });
@@ -377,40 +377,26 @@ async function generateReport(req, res) {
                           stderrBuffer += data.toString();
                       });
                       postProc.on('close', (exitCode, signal) => {
-                          if (postProcTerminalState === 'spawn-error') {
-                              return;
-                          }
-                          if (postProcTerminalState !== null) {
-                              log.warn("Ignoring duplicate post-processing close event for report: " + req.body.reportName);
-                              return;
-                          }
-                          postProcTerminalState = 'closed';
+                          if (handled) return;
+                          handled = true;
+
                           if (exitCode === 0) {
                               log.info("Post-processing completed for report: " + req.body.reportName);
-                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.'); // String 'Post-processing complete.' used in StudyPage.js
-                          } else {
-                              let failureMessage = '';
-                              if (signal === 'SIGKILL') {
-                                  failureMessage = 'Error: Post-processing failed due to timeout.';
-                                  fs.appendFileSync(reportFolder + 'stderr.log', '\nPost-processing terminated due to timeout.');
-                              } else if (signal) {
-                                  failureMessage = 'Error: Post-processing failed (terminated by signal ' + signal + ').';
-                              } else {
-                                  failureMessage = 'Error: Post-processing failed (exit code ' + exitCode + ').';
-                              }
-                              log.error("Post-processing script failed for report " + req.body.reportName + ". Exit code: " + exitCode + ", signal: " + signal);
-                              fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + failureMessage); // String 'Post-processing failed' used in StudyPage.js
-                              let displayToUser = getPostProcessingUserMessage(stderrBuffer);
-                              if (displayToUser) {
-                                  fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + displayToUser);
-                              }
-                          }
-                      });
-                      postProc.on('error', (err) => {
-                          if (postProcTerminalState !== null) {
+                              fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing complete.');
                               return;
                           }
-                          postProcTerminalState = 'spawn-error';
+
+                          log.error("Post-processing script failed for report " + req.body.reportName + ". Exit code: " + exitCode + ", signal: " + signal);
+
+                          const message = signal
+                              ? 'Error: Post-processing failed due to timeout.'
+                              : 'Error: Post-processing failed (exit code ' + exitCode + ').\n' + getPostProcessingUserMessage(stderrBuffer);
+
+                          fs.appendFileSync(reportFolder + 'logfile.txt', '\n' + message);
+                      });
+                      postProc.on('error', (err) => {
+                          if (handled) return;
+                          handled = true;
                           log.error("Error running post-processing script: " + err);
                           fs.appendFileSync(reportFolder + 'logfile.txt', '\nPost-processing error: ' + err.message); // String 'Post-processing error' used in StudyPage.js
                       });
@@ -441,7 +427,9 @@ async function generateReport(req, res) {
 }
 
 function stripAnsiEscapeCodes(text) {
-    return text.replace(/\x1B\[[0-9;]*[A-Za-z]/g, '');
+    return text
+        .replace(/\x1B\[[0-9;]*[A-Za-z]/g, '')       // CSI sequences
+        .replace(/\x1B\][^\x07\x1B]*(\x07|\x1B\\)/g, ''); // OSC sequences
 }
 
 function getPostProcessingUserMessage(stderrBuffer) {
@@ -454,7 +442,6 @@ function getPostProcessingUserMessage(stderrBuffer) {
     if (sanitizedLines.length === 0) {
         return '';
     }
-
     const errorLines = sanitizedLines.filter((line) => /error:/i.test(line));
     const selectedLines = errorLines.length > 0 ? errorLines : sanitizedLines.slice(-5);
     const message = selectedLines.join('\n');
@@ -463,7 +450,6 @@ function getPostProcessingUserMessage(stderrBuffer) {
     if (message.length > maxLength) {
         return message.slice(0, maxLength) + '...';
     }
-
     return message;
 }
 
