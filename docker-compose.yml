@@ -91,6 +91,8 @@ services:
       #POST_PROCESS_SCRIPT: ${POST_PROCESS_SCRIPT:-/post_process.sh}
       # Optional: timeout (ms) for post-processing script
       #POST_PROCESS_TIMEOUT: ${POST_PROCESS_TIMEOUT:-60000}
+      # Optional: whether the post-processing checkbox is checked by default (true/false)
+      #POST_PROCESS_DEFAULT_CHECKED: ${POST_PROCESS_DEFAULT_CHECKED:-true}
     depends_on:
       - mongo
       - pathways
