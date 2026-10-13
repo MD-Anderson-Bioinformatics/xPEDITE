@@ -37,6 +37,9 @@ var express = require('express'),
 
 const authenticate = require('./shaidy-authenticate').shaidyAuthenticator;
 const scriptPath = process.env.POST_PROCESS_SCRIPT || '/post_process.sh';
+// Whether the post-processing checkbox is checked by default (default: checked)
+const postProcessDefaultChecked = !['false', '0', 'no', 'off'].includes(
+    (process.env.POST_PROCESS_DEFAULT_CHECKED || 'true').trim().toLowerCase());
 
 const utils = require('./utils')
 const studymodel = require("./study.js")
@@ -684,7 +687,8 @@ async function search_study(req, res, studyName) {
         res.render("study", {
           studyDetail: studyDetail,
           rootPath: rootPath,
-          postProcessingAvailable: fs.existsSync(scriptPath)
+          postProcessingAvailable: fs.existsSync(scriptPath),
+          postProcessDefaultChecked: postProcessDefaultChecked
         })
     } catch (err) {
         log.error(err)

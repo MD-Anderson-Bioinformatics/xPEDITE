@@ -127,7 +127,12 @@ and displayed in the status area of the report generation page.
    environment:
      POST_PROCESS_SCRIPT: ${POST_PROCESS_SCRIPT:-/post_process.sh}
      POST_PROCESS_TIMEOUT: ${POST_PROCESS_TIMEOUT:-5000}
+     POST_PROCESS_DEFAULT_CHECKED: ${POST_PROCESS_DEFAULT_CHECKED:-true}
    ```
+
+   `POST_PROCESS_DEFAULT_CHECKED` controls whether the checkbox is checked when the
+   page loads. It defaults to `true`; set it to `false` (or `0`, `no`, `off`) to have
+   the checkbox unchecked by default.
 
 If the script is not present at the configured path, the checkbox will not appear and no post-processing will run.
 
