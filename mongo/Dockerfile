@@ -22,7 +22,15 @@ FROM debian:bookworm-slim
 
 ENV MONGO_MAJOR 7.0
 
-RUN apt-get update && \
+## Pin the uid/gid of the mongodb user so that ownership of the mounted
+## data volume does not change when the base image is updated.
+## (Otherwise the uid/gid is assigned dynamically by the mongodb-org package.)
+ARG MONGO_UID=999
+ARG MONGO_GID=999
+
+RUN groupadd --system --gid ${MONGO_GID} mongodb && \
+    useradd --system --uid ${MONGO_UID} --gid mongodb --home-dir /data/db mongodb && \
+    apt-get update && \
     apt-get install -y gnupg curl gosu && \
     curl -fsSL https://pgp.mongodb.com/server-${MONGO_MAJOR}.asc | \
     gpg -o /usr/share/keyrings/mongodb-server-${MONGO_MAJOR}.gpg \
@@ -42,7 +50,9 @@ VOLUME ["/data/db", "/data/configdb"]
 
 EXPOSE 27017
 
-USER mongodb
+## Container starts as root so docker-entrypoint.sh can fix ownership of the
+## data volumes (e.g. volumes created by an image with a different mongodb
+## uid/gid) before dropping privileges to the mongodb user via gosu.
 
 CMD ["mongod"]
 
