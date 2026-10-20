@@ -102,6 +102,9 @@ services:
   mongo:
     build:
       context: mongo
+      args:
+        MONGO_UID: ${MONGO_UID:-999}
+        MONGO_GID: ${MONGO_GID:-999}
     image: ${MONGO_RE:-mongo}/mongo:${TAG:-latest}
     container_name: xpedite_mongo
     volumes:
