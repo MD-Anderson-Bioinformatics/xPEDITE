@@ -21,7 +21,7 @@
 ##  *** START of node-base ***
 ####
 
-FROM node:22.23.1-slim@sha256:53ada149d435c38b14476cb57e4a7da73c15595aba79bd6971b547ceb6d018bf AS node-base
+FROM node:22.23.4-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da AS node-base
 
 ## Install openssh-client and openssh-server before ssh
 ## because otherwise ssh installs the version with CVE-2021-41617
